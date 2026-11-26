@@ -5,9 +5,9 @@
  */
 export const site = {
   name: 'Parfum Lux',
-  city: 'Kyiv, Ukraine',
-  address: 'Kyiv, Ukraine — private showroom, by appointment',
-  hours: 'Mon–Sat · 10:00–20:00',
+  city: 'Київ, Україна',
+  address: 'Київ, Україна — приватний шоурум за попереднім записом',
+  hours: 'Пн–Сб · 10:00–20:00',
   phone: '' as string, // e.g. '+380 67 123 45 67'
   email: '' as string, // e.g. 'concierge@yourdomain.com'
   freeShippingFrom: 5000,

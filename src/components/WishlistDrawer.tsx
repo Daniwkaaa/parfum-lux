@@ -12,11 +12,11 @@ export function WishlistDrawer() {
   const add = useShop((s) => s.add)
 
   return (
-    <Drawer title="Wishlist" onClose={() => setPanel(null)}>
+    <Drawer title="Обране" onClose={() => setPanel(null)}>
       {wishlist.length === 0 ? (
         <div className="flex h-full flex-col items-center justify-center text-center">
-          <p className="font-serif text-3xl font-light">Nothing saved yet</p>
-          <p className="mt-3 max-w-xs text-sm text-ivory/50">Tap the heart on any fragrance to keep it here for later.</p>
+          <p className="font-serif text-3xl font-light">Тут поки порожньо</p>
+          <p className="mt-3 max-w-xs text-sm text-ivory/50">Натисніть на сердечко біля будь-якого аромату, щоб зберегти його тут.</p>
           <button
             className="btn-line mt-8"
             onClick={() => {
@@ -24,7 +24,7 @@ export function WishlistDrawer() {
               setTimeout(() => scrollToId('collection'), 300)
             }}
           >
-            Discover Fragrances
+            Переглянути аромати
           </button>
         </div>
       ) : (
@@ -40,7 +40,7 @@ export function WishlistDrawer() {
                     setPanel(null)
                     openProduct(id)
                   }}
-                  aria-label={`View ${p.name}`}
+                  aria-label={`Переглянути ${p.name}`}
                 >
                   <BottleImage id={id} alt="" />
                 </button>
@@ -49,9 +49,9 @@ export function WishlistDrawer() {
                     <div>
                       <p className="eyebrow text-[9px]">{p.brand}</p>
                       <p className="font-serif text-lg leading-tight">{p.name}</p>
-                      <p className="text-sm text-champagne">from {uah(minPrice(p))}</p>
+                      <p className="text-sm text-champagne">від {uah(minPrice(p))}</p>
                     </div>
-                    <button className="text-ivory/40 hover:text-champagne" onClick={() => toggle(id)} aria-label={`Remove ${p.name} from wishlist`}>
+                    <button className="text-ivory/40 hover:text-champagne" onClick={() => toggle(id)} aria-label={`Видалити ${p.name} з обраного`}>
                       <CloseIcon width={16} height={16} />
                     </button>
                   </div>
@@ -59,10 +59,10 @@ export function WishlistDrawer() {
                     className="mt-auto self-start text-[10px] font-semibold uppercase tracking-wide2 text-champagne hover:text-champagne-light"
                     onClick={() => {
                       add(id, p.sizes[0].ml)
-                      notify(`${p.name} · ${p.sizes[0].ml} ml added to bag`)
+                      notify(`${p.name} · ${p.sizes[0].ml} мл додано до кошика`)
                     }}
                   >
-                    + Add {p.sizes[0].ml} ml to bag
+                    + Додати {p.sizes[0].ml} мл до кошика
                   </button>
                 </div>
               </li>

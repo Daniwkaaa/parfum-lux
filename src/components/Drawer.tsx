@@ -24,7 +24,7 @@ export function Drawer({
   return (
     <motion.div className="fixed inset-0 z-50" initial="hidden" animate="show" exit="hidden">
       <motion.button
-        aria-label="Close"
+        aria-label="Закрити"
         className="absolute inset-0 h-full w-full cursor-default bg-black/60 backdrop-blur-sm"
         variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}
         transition={{ duration: 0.5 }}
@@ -44,7 +44,7 @@ export function Drawer({
       >
         <header className="flex items-center justify-between border-b border-ivory/10 px-6 py-5">
           <h2 className="font-serif text-3xl font-light">{title}</h2>
-          <button className="icon-btn" onClick={onClose} aria-label={`Close ${title}`}>
+          <button className="icon-btn" onClick={onClose} aria-label={`Закрити: ${title}`}>
             <CloseIcon />
           </button>
         </header>

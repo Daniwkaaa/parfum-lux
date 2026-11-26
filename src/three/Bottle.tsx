@@ -144,7 +144,10 @@ function useFontsReady() {
     let live = true
     const f = document.fonts
     if (!f) return setReady(true)
-    Promise.all([f.load('500 120px "Cormorant Garamond"'), f.load('600 40px Manrope')])
+    Promise.all([
+      f.load('500 120px "Cormorant Garamond"', 'AБВ КИЇВ'),
+      f.load('600 40px Manrope', 'AБВ КИЇВ'),
+    ])
       .catch(() => undefined)
       .finally(() => live && setReady(true))
     return () => {

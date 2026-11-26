@@ -8,22 +8,22 @@ import { BottleImage } from './ProductCard'
 import { ArrowIcon } from './Icons'
 
 const FAM: { id: Family; label: string; hint: string }[] = [
-  { id: 'fresh', label: 'Fresh', hint: 'Citrus, sea air, green herbs' },
-  { id: 'sweet', label: 'Sweet', hint: 'Vanilla, honey, tonka' },
-  { id: 'woody', label: 'Woody', hint: 'Cedar, sandalwood, oud' },
-  { id: 'spicy', label: 'Spicy', hint: 'Cinnamon, cardamom, pepper' },
-  { id: 'floral', label: 'Floral', hint: 'Jasmine, rose, violet' },
+  { id: 'fresh', label: 'Свіжі', hint: 'Цитруси, морське повітря, зелені трави' },
+  { id: 'sweet', label: 'Солодкі', hint: 'Ваніль, мед, боби тонка' },
+  { id: 'woody', label: 'Деревні', hint: 'Кедр, сандал, уд' },
+  { id: 'spicy', label: 'Пряні', hint: 'Кориця, кардамон, перець' },
+  { id: 'floral', label: 'Квіткові', hint: 'Жасмин, троянда, фіалка' },
 ]
 const OCC: { id: Occasion; label: string; hint: string }[] = [
-  { id: 'day', label: 'Everyday', hint: 'Effortless, from morning on' },
-  { id: 'office', label: 'Office', hint: 'Polished and close to skin' },
-  { id: 'evening', label: 'Evening', hint: 'Dinners, dates, nightlife' },
-  { id: 'special', label: 'Special occasion', hint: 'Unforgettable entrances' },
+  { id: 'day', label: 'Щодня', hint: 'Невимушено, з самого ранку' },
+  { id: 'office', label: 'Офіс', hint: 'Стримано й близько до шкіри' },
+  { id: 'evening', label: 'Вечір', hint: 'Вечері, побачення, нічне життя' },
+  { id: 'special', label: 'Особлива подія', hint: 'Для незабутньої появи' },
 ]
 const INT: { id: Intensity; label: string; hint: string }[] = [
-  { id: 'soft', label: 'Subtle', hint: 'A whisper for those close to you' },
-  { id: 'moderate', label: 'Balanced', hint: 'Noticed, never overwhelming' },
-  { id: 'intense', label: 'Intense', hint: 'A trail that lingers in the room' },
+  { id: 'soft', label: 'Делікатний', hint: 'Шепіт для найближчих' },
+  { id: 'moderate', label: 'Збалансований', hint: 'Помітний, але не нав’язливий' },
+  { id: 'intense', label: 'Інтенсивний', hint: 'Шлейф, що лишається в кімнаті' },
 ]
 
 function Option({ active, onClick, label, hint }: { active: boolean; onClick: () => void; label: string; hint: string }) {
@@ -41,7 +41,7 @@ function Option({ active, onClick, label, hint }: { active: boolean; onClick: ()
   )
 }
 
-const STEPS = ['Which scents draw you in?', 'Where will you wear it?', 'How present should it be?']
+const STEPS = ['Які аромати вас приваблюють?', 'Куди ви його одягатимете?', 'Наскільки відчутним він має бути?']
 
 export function Quiz() {
   const [step, setStep] = useState(0)
@@ -58,14 +58,14 @@ export function Quiz() {
       <div className="pointer-events-none absolute -right-40 top-0 h-[600px] w-[600px] rounded-full bg-champagne/10 blur-[140px]" />
       <div className="container-lux relative grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
         <div data-reveal>
-          <p className="eyebrow">Fragrance finder</p>
+          <p className="eyebrow">Підбір аромату</p>
           <h2 id="quiz-title" className="h-display mt-5 text-6xl sm:text-7xl">
-            Discover <br />
-            your <em className="text-champagne">scent</em>
+            Знайди <br />
+            свій <em className="text-champagne">аромат</em>
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-ivory/55">
-            Three questions, one considered recommendation. Our finder matches your preferences against the scent
-            profile of every fragrance in the boutique.
+            Три запитання — одна виважена рекомендація. Ми порівнюємо ваші вподобання з профілем кожного аромату
+            в нашому бутику.
           </p>
           <div className="mt-10 flex gap-2" aria-hidden="true">
             {[0, 1, 2, 3].map((i) => (
@@ -73,7 +73,7 @@ export function Quiz() {
             ))}
           </div>
           <p className="mt-3 text-[10px] uppercase tracking-wide2 text-ivory/40">
-            {step < 3 ? `Step ${step + 1} of 3` : 'Your selection'}
+            {step < 3 ? `Крок ${step + 1} / 3` : 'Ваша добірка'}
           </p>
         </div>
 
@@ -89,7 +89,7 @@ export function Quiz() {
               {step < 3 && (
                 <>
                   <h3 className="font-serif text-3xl font-light sm:text-4xl">{STEPS[step]}</h3>
-                  {step === 0 && <p className="mt-2 text-xs text-ivory/45">Choose up to two.</p>}
+                  {step === 0 && <p className="mt-2 text-xs text-ivory/45">Оберіть до двох варіантів.</p>}
                   <div className="mt-8 grid gap-3 sm:grid-cols-2">
                     {step === 0 &&
                       FAM.map((o) => (
@@ -115,17 +115,17 @@ export function Quiz() {
                       onClick={() => setStep((s) => Math.max(0, s - 1))}
                       className={`text-[10px] uppercase tracking-wide2 text-ivory/50 hover:text-champagne ${step === 0 ? 'invisible' : ''}`}
                     >
-                      ← Back
+                      ← Назад
                     </button>
                     <button className="btn-gold btn-sweep" disabled={!canNext} onClick={() => setStep((s) => s + 1)}>
-                      {step === 2 ? 'Reveal my scents' : 'Continue'} <ArrowIcon width={16} height={16} />
+                      {step === 2 ? 'Показати мої аромати' : 'Далі'} <ArrowIcon width={16} height={16} />
                     </button>
                   </div>
                 </>
               )}
               {step === 3 && (
                 <>
-                  <h3 className="font-serif text-3xl font-light sm:text-4xl">Selected for you</h3>
+                  <h3 className="font-serif text-3xl font-light sm:text-4xl">Обрано для вас</h3>
                   <ul className="mt-8 grid gap-4 sm:grid-cols-3">
                     {results.map(({ product: p, score }, i) => (
                       <motion.li
@@ -135,10 +135,10 @@ export function Quiz() {
                         transition={{ delay: 0.15 + i * 0.12, duration: 0.7 }}
                         className="group flex flex-col border border-ivory/10 bg-ink"
                       >
-                        <button onClick={() => openProduct(p.id)} className="relative aspect-[4/5] bg-[#15110e]" aria-label={`View ${p.name}`}>
+                        <button onClick={() => openProduct(p.id)} className="relative aspect-[4/5] bg-[#15110e]" aria-label={`Переглянути ${p.name}`}>
                           <BottleImage id={p.id} alt="" className="transition-transform duration-700 group-hover:-translate-y-2" />
                           <span className="absolute left-3 top-3 bg-ink/80 px-2 py-1 text-[9px] font-semibold uppercase tracking-wide2 text-champagne">
-                            {score}% match
+                            Збіг {score}%
                           </span>
                         </button>
                         <div className="flex flex-1 flex-col p-4">
@@ -149,10 +149,10 @@ export function Quiz() {
                             className="mt-4 text-left text-[10px] font-semibold uppercase tracking-wide2 text-ivory/70 hover:text-champagne"
                             onClick={() => {
                               add(p.id, p.sizes[0].ml)
-                              notify(`${p.name} · ${p.sizes[0].ml} ml added to bag`)
+                              notify(`${p.name} · ${p.sizes[0].ml} мл додано до кошика`)
                             }}
                           >
-                            + Add to bag
+                            + До кошика
                           </button>
                         </div>
                       </motion.li>
@@ -165,7 +165,7 @@ export function Quiz() {
                       setStep(0)
                     }}
                   >
-                    ↺ Start again
+                    ↺ Почати знову
                   </button>
                 </>
               )}

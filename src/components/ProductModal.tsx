@@ -19,21 +19,21 @@ function Badge({ kind }: { kind: 'official' | 'editorial' }) {
       }`}
       title={
         kind === 'official'
-          ? 'Fragrance facts and pyramid as published by the house'
-          : "The boutique's own opinion — not official brand information"
+          ? 'Факти та піраміда нот за даними парфумерного дому'
+          : 'Власна думка бутика — не офіційна інформація бренду'
       }
     >
-      {kind}
+      {kind === 'official' ? 'Офіційно' : 'Редакція'}
     </span>
   )
 }
 
-function Meter({ label, value }: { label: string; value: number }) {
+function Meter({ label, value, scale }: { label: string; value: number; scale: string[] }) {
   return (
     <div>
       <div className="flex justify-between text-[10px] uppercase tracking-wide2 text-ivory/50">
         <span>{label}</span>
-        <span>{['', 'Soft', 'Moderate', 'Good', 'Long', 'Exceptional'][value]}</span>
+        <span>{scale[value - 1]}</span>
       </div>
       <div className="mt-2 grid grid-cols-5 gap-1" role="meter" aria-valuemin={1} aria-valuemax={5} aria-valuenow={value} aria-label={label}>
         {[1, 2, 3, 4, 5].map((i) => (
@@ -87,11 +87,11 @@ function Details({ p }: { p: Product }) {
         />
         <div className="pointer-events-none absolute bottom-5 left-5 right-5 flex items-end justify-between text-[9px] uppercase tracking-wide2 text-ivory/40">
           <span className="flex items-center gap-2">
-            <RotateIcon width={14} height={14} /> {webgl ? 'Drag to rotate 360° · Scroll or pinch to zoom' : '3D unavailable on this device'}
+            <RotateIcon width={14} height={14} /> {webgl ? 'Потягніть, щоб обернути на 360° · Прокрутіть або зведіть пальці, щоб наблизити' : '3D недоступне на цьому пристрої'}
           </span>
         </div>
         <p className="pointer-events-none absolute left-5 top-5 max-w-[60%] text-[9px] uppercase leading-relaxed tracking-wide2 text-ivory/30">
-          Stylised 3D interpretation · not an official replica
+          Стилізована 3D-інтерпретація · не офіційна копія флакона
         </p>
       </div>
 
@@ -106,11 +106,11 @@ function Details({ p }: { p: Product }) {
           <h2 id="product-title" className="h-display mt-4 text-5xl sm:text-6xl">{p.name}</h2>
           <p className="mt-3 text-[11px] uppercase tracking-wide2 text-ivory/50">
             {p.concentration} · {p.year}
-            {p.perfumer && <> · Perfumer: {p.perfumer}</>}
+            {p.perfumer && <> · Парфумер: {p.perfumer}</>}
             <Badge kind="official" />
           </p>
           <p className="mt-8 font-serif text-4xl text-champagne">{uah(size.price * qty)}</p>
-          {qty > 1 && <p className="mt-1 text-xs text-ivory/40">{uah(size.price)} each</p>}
+          {qty > 1 && <p className="mt-1 text-xs text-ivory/40">{uah(size.price)} за одиницю</p>}
 
           <p className="mt-8 leading-relaxed text-ivory/70">
             {p.description}
@@ -122,7 +122,7 @@ function Details({ p }: { p: Product }) {
 
           {/* volume */}
           <fieldset className="mt-10">
-            <legend className="text-[10px] uppercase tracking-luxe text-ivory/50">Volume</legend>
+            <legend className="text-[10px] uppercase tracking-luxe text-ivory/50">Об’єм</legend>
             <div className="mt-3 flex flex-wrap gap-2">
               {p.sizes.map((s) => (
                 <label
@@ -132,7 +132,7 @@ function Details({ p }: { p: Product }) {
                   }`}
                 >
                   <input type="radio" name="volume" value={s.ml} checked={ml === s.ml} onChange={() => setMl(s.ml)} className="sr-only" />
-                  <span className="block text-sm font-semibold">{s.ml} ml</span>
+                  <span className="block text-sm font-semibold">{s.ml} мл</span>
                   <span className="block text-[10px] opacity-60">{uah(s.price)}</span>
                 </label>
               ))}
@@ -141,32 +141,32 @@ function Details({ p }: { p: Product }) {
 
           {/* qty + add */}
           <div className="mt-8 flex flex-wrap items-stretch gap-3">
-            <div className="flex items-center border border-ivory/15" role="group" aria-label="Quantity">
-              <button className="icon-btn h-12 w-12" onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={qty <= 1} aria-label="Decrease quantity">
+            <div className="flex items-center border border-ivory/15" role="group" aria-label="Кількість">
+              <button className="icon-btn h-12 w-12" onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={qty <= 1} aria-label="Зменшити кількість">
                 <MinusIcon width={16} height={16} />
               </button>
               <span className="w-8 text-center text-sm" aria-live="polite">{qty}</span>
-              <button className="icon-btn h-12 w-12" onClick={() => setQty((q) => Math.min(MAX_QTY, q + 1))} disabled={qty >= MAX_QTY} aria-label="Increase quantity">
+              <button className="icon-btn h-12 w-12" onClick={() => setQty((q) => Math.min(MAX_QTY, q + 1))} disabled={qty >= MAX_QTY} aria-label="Збільшити кількість">
                 <PlusIcon width={16} height={16} />
               </button>
             </div>
             <button
-              className="btn-gold btn-sweep flex-1"
+              className="btn-gold btn-sweep flex-1 whitespace-nowrap px-4"
               onClick={() => {
                 add(p.id, ml, qty)
-                notify(`${p.name} · ${ml} ml × ${qty} added to bag`)
+                notify(`${p.name} · ${ml} мл × ${qty} додано до кошика`)
               }}
             >
-              Add to Cart
+              До кошика
             </button>
             <button
               className={`btn-line px-4 ${wished ? 'border-champagne text-champagne' : ''}`}
               onClick={() => {
                 toggleWish(p.id)
-                notify(wished ? 'Removed from wishlist' : 'Added to wishlist')
+                notify(wished ? 'Видалено з обраного' : 'Додано до обраного')
               }}
               aria-pressed={wished}
-              aria-label={wished ? 'Remove from wishlist' : 'Add to wishlist'}
+              aria-label={wished ? 'Видалити з обраного' : 'Додати до обраного'}
             >
               <HeartIcon filled={wished} width={18} height={18} />
             </button>
@@ -179,20 +179,20 @@ function Details({ p }: { p: Product }) {
               setPanel('checkout')
             }}
           >
-            Buy now — go to checkout
+            Купити зараз — оформити замовлення
           </button>
 
           {/* notes */}
           <div className="mt-14">
             <h3 className="text-[10px] uppercase tracking-luxe text-ivory/50">
-              Fragrance pyramid <Badge kind="official" />
+              Піраміда нот <Badge kind="official" />
             </h3>
             <div className="mt-5 grid grid-cols-1 gap-px bg-ivory/10 sm:grid-cols-3">
               {(
                 [
-                  ['Top notes', p.notes.top],
-                  ['Heart notes', p.notes.heart],
-                  ['Base notes', p.notes.base],
+                  ['Ноти верху', p.notes.top],
+                  ['Ноти серця', p.notes.heart],
+                  ['Базові ноти', p.notes.base],
                 ] as const
               ).map(([t, n]) => (
                 <div key={t} className="bg-ink p-5">
@@ -210,23 +210,23 @@ function Details({ p }: { p: Product }) {
           {/* characteristics */}
           <div className="mt-14">
             <h3 className="text-[10px] uppercase tracking-luxe text-ivory/50">
-              Character <Badge kind="editorial" />
+              Характер аромату <Badge kind="editorial" />
             </h3>
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              <Meter label="Longevity" value={p.characteristics.longevity} />
-              <Meter label="Projection" value={p.characteristics.projection} />
+              <Meter label="Стійкість" value={p.characteristics.longevity} scale={['Слабка', 'Помірна', 'Добра', 'Висока', 'Виняткова']} />
+              <Meter label="Шлейф" value={p.characteristics.projection} scale={['Близький до шкіри', 'Помірний', 'Помітний', 'Сильний', 'Потужний']} />
             </div>
             <dl className="mt-8 grid grid-cols-1 gap-y-5 text-sm sm:grid-cols-3">
               <div>
-                <dt className="text-[10px] uppercase tracking-wide2 text-ivory/40">Family</dt>
+                <dt className="text-[10px] uppercase tracking-wide2 text-ivory/40">Група аромату</dt>
                 <dd className="mt-1 text-ivory/85">{p.family}</dd>
               </div>
               <div>
-                <dt className="text-[10px] uppercase tracking-wide2 text-ivory/40">Season</dt>
+                <dt className="text-[10px] uppercase tracking-wide2 text-ivory/40">Сезон</dt>
                 <dd className="mt-1 text-ivory/85">{p.characteristics.seasons.join(', ')}</dd>
               </div>
               <div>
-                <dt className="text-[10px] uppercase tracking-wide2 text-ivory/40">Occasion</dt>
+                <dt className="text-[10px] uppercase tracking-wide2 text-ivory/40">Нагода</dt>
                 <dd className="mt-1 text-ivory/85">{p.characteristics.occasion}</dd>
               </div>
             </dl>
@@ -237,7 +237,7 @@ function Details({ p }: { p: Product }) {
             className="group mt-16 flex w-full items-center justify-between border-t border-ivory/10 pt-8 text-left"
           >
             <span>
-              <span className="block text-[10px] uppercase tracking-luxe text-ivory/40">Next fragrance</span>
+              <span className="block text-[10px] uppercase tracking-luxe text-ivory/40">Наступний аромат</span>
               <span className="mt-2 block font-serif text-3xl font-light group-hover:text-champagne">
                 {next.brand} — {next.name}
               </span>
@@ -299,9 +299,9 @@ export function ProductModal() {
           <button
             onClick={() => openProduct(null)}
             className="fixed right-4 top-4 z-10 flex items-center gap-3 bg-ink/70 px-4 py-3 text-[10px] uppercase tracking-luxe text-ivory/80 backdrop-blur hover:text-champagne sm:right-8 sm:top-6"
-            aria-label="Close product details"
+            aria-label="Закрити картку товару"
           >
-            Close <CloseIcon width={16} height={16} />
+            Закрити <CloseIcon width={16} height={16} />
           </button>
           <AnimatePresence mode="wait">
             <motion.div

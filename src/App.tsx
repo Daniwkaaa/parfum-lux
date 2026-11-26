@@ -31,7 +31,7 @@ export default function App() {
   return (
     <div className="grain">
       <a href="#collection" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:bg-champagne focus:px-4 focus:py-2 focus:text-ink">
-        Skip to collection
+        Перейти до колекції
       </a>
       <AnimatePresence>{loading && <Loader onDone={done} />}</AnimatePresence>
       <Nav />

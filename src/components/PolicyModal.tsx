@@ -9,28 +9,28 @@ import { CloseIcon } from './Icons'
 
 const CONTENT = {
   delivery: {
-    title: 'Delivery information',
+    title: 'Доставка',
     body: [
-      `We deliver across Ukraine with Nova Poshta — to a branch, a parcel locker or by courier to your door. Orders confirmed before 15:00 on weekdays are dispatched the same day; delivery typically takes 1–2 days.`,
-      `Delivery costs ${uah(site.shippingCost)} and is complimentary for orders from ${uah(site.freeShippingFrom)}.`,
-      'Every order is packed in protective boxes and sealed. You may inspect the parcel at the branch before paying.',
+      `Доставляємо по всій Україні Новою поштою — у відділення, поштомат або кур’єром до дверей. Замовлення, підтверджені в будні до 15:00, відправляємо того ж дня; доставка зазвичай триває 1–2 дні.`,
+      `Вартість доставки — ${uah(site.shippingCost)}; для замовлень від ${uah(site.freeShippingFrom)} доставка безкоштовна.`,
+      'Кожне замовлення пакуємо в захисну коробку й запечатуємо. Ви можете оглянути посилку у відділенні перед оплатою.',
     ],
   },
   payment: {
-    title: 'Payment information',
+    title: 'Оплата',
     body: [
-      'Payment is made on receipt — in cash or by card at the Nova Poshta branch or to the courier.',
-      'Online card payment requires a connected payment provider and is not active in this demonstration build. No card details are ever requested or stored on this site.',
-      'All prices are shown in Ukrainian hryvnia (UAH) and include VAT.',
+      'Оплата здійснюється під час отримання — готівкою або карткою у відділенні Нової пошти чи кур’єру.',
+      'Онлайн-оплата карткою потребує підключеного платіжного сервісу й у цій демоверсії не діє. Сайт ніколи не запитує й не зберігає дані банківських карток.',
+      'Усі ціни вказано в українських гривнях (₴).',
     ],
   },
   privacy: {
-    title: 'Privacy policy',
+    title: 'Політика конфіденційності',
     body: [
-      'This website is a portfolio demonstration. Your bag, wishlist, newsletter address and demo orders are stored only in your own browser (localStorage) and are never sent to a server.',
-      'You can delete this data at any time by clearing your browser storage for this site.',
-      'If the boutique is connected to a live backend, personal data (name, phone, delivery address) would be used solely to fulfil your order, in line with the Law of Ukraine “On Personal Data Protection”.',
-      site.email ? `Questions: ${site.email}` : 'Questions: use the concierge form in the Contacts section.',
+      'Цей сайт — демонстраційний проєкт для портфоліо. Ваш кошик, обране, адреса для розсилки та демо-замовлення зберігаються лише у вашому браузері (localStorage) й ніколи не надсилаються на сервер.',
+      'Ви можете будь-коли видалити ці дані, очистивши сховище браузера для цього сайту.',
+      'Якщо бутик буде підключено до робочого бекенду, персональні дані (ім’я, телефон, адреса доставки) використовуватимуться виключно для виконання замовлення відповідно до Закону України «Про захист персональних даних».',
+      site.email ? `Запитання: ${site.email}` : 'Запитання можна поставити через форму консьєржа в розділі «Контакти».',
     ],
   },
 }
@@ -45,7 +45,7 @@ export function PolicyModal() {
     <AnimatePresence>
       {c && (
         <motion.div className="fixed inset-0 z-[70] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <button className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setPolicy(null)} aria-label="Close" tabIndex={-1} />
+          <button className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setPolicy(null)} aria-label="Закрити" tabIndex={-1} />
           <motion.div
             ref={box}
             role="dialog"
@@ -58,7 +58,7 @@ export function PolicyModal() {
             className="relative max-h-[85vh] w-full max-w-xl overflow-y-auto border border-ivory/10 bg-ink-800 p-8 sm:p-10"
             data-lenis-prevent
           >
-            <button className="icon-btn absolute right-4 top-4" onClick={() => setPolicy(null)} aria-label="Close">
+            <button className="icon-btn absolute right-4 top-4" onClick={() => setPolicy(null)} aria-label="Закрити">
               <CloseIcon />
             </button>
             <h2 id="policy-title" className="font-serif text-4xl font-light">{c.title}</h2>

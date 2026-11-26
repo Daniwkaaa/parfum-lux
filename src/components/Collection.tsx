@@ -6,12 +6,12 @@ import { SearchIcon, CloseIcon } from './Icons'
 import { create } from 'zustand'
 
 const FAMILIES: { id: Family | 'all'; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'fresh', label: 'Fresh' },
-  { id: 'sweet', label: 'Sweet' },
-  { id: 'woody', label: 'Woody' },
-  { id: 'spicy', label: 'Spicy' },
-  { id: 'floral', label: 'Floral' },
+  { id: 'all', label: 'Усі' },
+  { id: 'fresh', label: 'Свіжі' },
+  { id: 'sweet', label: 'Солодкі' },
+  { id: 'woody', label: 'Деревні' },
+  { id: 'spicy', label: 'Пряні' },
+  { id: 'floral', label: 'Квіткові' },
 ]
 
 type Sort = 'featured' | 'price-asc' | 'price-desc' | 'name'
@@ -62,20 +62,20 @@ export function Collection() {
       <div className="container-lux">
         <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <div data-reveal>
-            <p className="eyebrow">The Collection · {products.length} fragrances</p>
+            <p className="eyebrow">Колекція · {products.length} ароматів</p>
             <h2 id="collection-title" className="h-display mt-5 text-6xl sm:text-7xl lg:text-8xl">
-              Curated <em className="text-champagne">icons</em>
+              Обрані <em className="text-champagne">ікони</em>
             </h2>
           </div>
           <p data-reveal className="max-w-md text-sm leading-relaxed text-ivory/55">
-            Ten defining fragrances from the houses that shaped modern perfumery. Drag, rotate and zoom each flacon
-            in our 3D showroom before you choose.
+            Десять визначальних ароматів від домів, що сформували сучасну парфумерію. Обертайте й наближайте кожен
+            флакон у нашому 3D-шоурумі, перш ніж зробити вибір.
           </p>
         </div>
 
         {/* Filters */}
         <div data-reveal className="mt-14 flex flex-col gap-5 border-y border-ivory/10 py-5 xl:flex-row xl:items-center xl:justify-between">
-          <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0" role="group" aria-label="Filter by scent family">
+          <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0" role="group" aria-label="Фільтр за групою ароматів">
             {FAMILIES.map((f) => (
               <button
                 key={f.id}
@@ -93,12 +93,12 @@ export function Collection() {
               <input
                 value={query}
                 onChange={(e) => set({ query: e.target.value })}
-                placeholder="Search name, brand or note"
+                placeholder="Назва, бренд або нота"
                 className="field min-w-[220px] py-2 pl-7 pr-6"
-                aria-label="Search the collection"
+                aria-label="Пошук у колекції"
               />
               {query && (
-                <button onClick={() => set({ query: '' })} className="absolute right-0 text-ivory/50 hover:text-champagne" aria-label="Clear search">
+                <button onClick={() => set({ query: '' })} className="absolute right-0 text-ivory/50 hover:text-champagne" aria-label="Очистити пошук">
                   <CloseIcon width={14} height={14} />
                 </button>
               )}
@@ -107,9 +107,9 @@ export function Collection() {
               value={brand}
               onChange={(e) => set({ brand: e.target.value })}
               className="field cursor-pointer bg-ink py-2 pr-2 text-xs uppercase tracking-wide2"
-              aria-label="Filter by brand"
+              aria-label="Фільтр за брендом"
             >
-              <option value="all">All houses</option>
+              <option value="all">Усі бренди</option>
               {brands.map((b) => (
                 <option key={b} value={b}>{b}</option>
               ))}
@@ -118,24 +118,24 @@ export function Collection() {
               value={sort}
               onChange={(e) => set({ sort: e.target.value as Sort })}
               className="field cursor-pointer bg-ink py-2 pr-2 text-xs uppercase tracking-wide2"
-              aria-label="Sort"
+              aria-label="Сортування"
             >
-              <option value="featured">Featured</option>
-              <option value="price-asc">Price: low to high</option>
-              <option value="price-desc">Price: high to low</option>
-              <option value="name">Name A–Z</option>
+              <option value="featured">Рекомендовані</option>
+              <option value="price-asc">Ціна: за зростанням</option>
+              <option value="price-desc">Ціна: за спаданням</option>
+              <option value="name">Назва: A–Z</option>
             </select>
           </div>
         </div>
 
         <div className="mt-6 flex min-h-6 items-center justify-between text-[10px] uppercase tracking-wide2 text-ivory/40">
-          <span aria-live="polite">{list.length} {list.length === 1 ? 'fragrance' : 'fragrances'}</span>
+          <span aria-live="polite">Знайдено: {list.length}</span>
           {filtered && (
             <button
               onClick={() => set({ family: 'all', brand: 'all', query: '' })}
               className="text-champagne hover:text-champagne-light"
             >
-              Reset filters
+              Скинути фільтри
             </button>
           )}
         </div>
@@ -149,9 +149,9 @@ export function Collection() {
         </motion.div>
         {list.length === 0 && (
           <div className="py-24 text-center">
-            <p className="font-serif text-3xl font-light">No fragrance matches your selection.</p>
+            <p className="font-serif text-3xl font-light">Жоден аромат не відповідає вибраним параметрам.</p>
             <button onClick={() => set({ family: 'all', brand: 'all', query: '' })} className="btn-line mt-8">
-              Show all fragrances
+              Показати всі аромати
             </button>
           </div>
         )}

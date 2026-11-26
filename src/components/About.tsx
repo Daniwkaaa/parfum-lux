@@ -1,18 +1,18 @@
 const PILLARS = [
   {
     n: 'I',
-    t: 'Authenticity',
-    d: 'Every flacon in our selection is presented under its real name, house and concentration — with the fragrance pyramid as the house publishes it. Our own opinions are always labelled as editorial.',
+    t: 'Автентичність',
+    d: 'Кожен флакон у нашій добірці представлений під справжньою назвою, з указанням бренду й концентрації та з пірамідою нот, яку публікує парфумерний дім. Наші власні враження завжди позначені як редакційні.',
   },
   {
     n: 'II',
-    t: 'Curation',
-    d: 'We hold fewer fragrances, chosen with intent: compositions that defined their decade, and the modern icons that will define the next.',
+    t: 'Ретельний відбір',
+    d: 'Ми тримаємо небагато ароматів, але кожен обрано свідомо: композиції, що визначили своє десятиліття, і сучасні ікони, які визначать наступне.',
   },
   {
     n: 'III',
-    t: 'Ritual',
-    d: 'Discovery should be slow. Explore each bottle in 3D, read its story, and let our finder guide you before you commit to a signature.',
+    t: 'Ритуал',
+    d: 'Знайомство з ароматом не терпить поспіху. Роздивіться кожен флакон у 3D, прочитайте його історію й дозвольте нашому підбору підказати, перш ніж обрати свій аромат-підпис.',
   },
 ]
 
@@ -22,27 +22,27 @@ export function About() {
       <div className="container-lux">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <p data-reveal className="eyebrow">About the boutique</p>
+            <p data-reveal className="eyebrow">Про бутик</p>
             <h2 id="about-title" data-reveal className="h-display mt-5 text-6xl sm:text-7xl lg:text-8xl">
-              A house of <em className="text-champagne">rare</em> scents
+              Дім <em className="text-champagne">рідкісних</em> ароматів
             </h2>
           </div>
           <div className="lg:col-span-6 lg:col-start-7">
             <p data-reveal className="font-serif text-3xl font-light leading-snug text-ivory/90 sm:text-4xl">
-              “Perfume is the most intimate accessory — invisible, yet the first thing remembered and the last thing
-              forgotten.”
+              «Парфуми — найінтимніший аксесуар: невидимий, але його запам’ятовують першим, а забувають
+              останнім».
             </p>
             <p data-reveal className="mt-8 leading-relaxed text-ivory/55">
-              Parfum Lux was imagined as a quiet room in a loud world: a boutique where the great houses of perfumery
-              sit side by side, and where choosing a fragrance feels like an appointment rather than a transaction. We
-              believe a scent should be understood before it is worn — its materials, its maker, its mood.
+              Parfum Lux задуманий як тиха кімната в гучному світі: бутик, де великі парфумерні доми стоять пліч-о-пліч,
+              а вибір аромату нагадує особисту зустріч, а не звичайну покупку. Ми віримо, що аромат варто зрозуміти,
+              перш ніж його носити, — його матеріали, творця й настрій.
             </p>
           </div>
         </div>
 
         <div className="relative mt-24 overflow-hidden">
           <p data-parallax="60" className="text-outline pointer-events-none select-none whitespace-nowrap font-serif text-[22vw] italic leading-none opacity-60" aria-hidden="true">
-            l’essence
+            есенція
           </p>
         </div>
 

@@ -12,14 +12,14 @@ export function Bestsellers() {
       <div className="container-lux">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div data-reveal>
-            <p className="eyebrow text-champagne-dark">Most coveted</p>
-            <h2 id="best-title" className="h-display mt-5 text-6xl sm:text-7xl lg:text-8xl">
-              Best<em className="text-champagne-dark">sellers</em>
+            <p className="eyebrow text-champagne-dark">Бестселери</p>
+            <h2 id="best-title" className="h-display mt-5 text-5xl sm:text-7xl lg:text-8xl">
+              Найпопулярніші <em className="text-champagne-dark">аромати</em>
             </h2>
           </div>
           <p data-reveal className="max-w-sm text-sm leading-relaxed text-ink/60">
-            The signatures our clients return to season after season — chosen for character, performance and
-            the compliments that follow.
+            Аромати, до яких наші клієнти повертаються сезон за сезоном, — за характер, стійкість і компліменти,
+            що їх супроводжують.
           </p>
         </div>
 
@@ -29,7 +29,7 @@ export function Bestsellers() {
               <button
                 onClick={() => open(p.id)}
                 className="group grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 py-5 text-left transition-colors duration-500 hover:bg-ink hover:text-ivory sm:grid-cols-[80px_120px_1fr_auto_auto] sm:gap-8 sm:px-6"
-                aria-label={`${p.brand} ${p.name} — view details`}
+                aria-label={`${p.brand} ${p.name} — детальніше`}
               >
                 <span className="font-serif text-3xl font-light text-champagne-dark group-hover:text-champagne sm:text-5xl">
                   {String(i + 1).padStart(2, '0')}

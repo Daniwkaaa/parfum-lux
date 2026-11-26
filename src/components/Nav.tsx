@@ -7,11 +7,11 @@ import { useCartTotals, useShop, useUI } from '../store/shop'
 import { scrollToId } from '../lib/format'
 
 export const NAV = [
-  { id: 'home', label: 'Home' },
-  { id: 'collection', label: 'Collection' },
-  { id: 'brands', label: 'Brands' },
-  { id: 'about', label: 'About Us' },
-  { id: 'contacts', label: 'Contacts' },
+  { id: 'home', label: 'Головна' },
+  { id: 'collection', label: 'Колекція' },
+  { id: 'brands', label: 'Бренди' },
+  { id: 'about', label: 'Про нас' },
+  { id: 'contacts', label: 'Контакти' },
 ]
 
 function useActive() {
@@ -85,12 +85,12 @@ export function Nav() {
           <button
             onClick={() => go('home')}
             className="font-serif text-xl uppercase tracking-[0.28em] text-ivory transition-colors hover:text-champagne sm:text-2xl"
-            aria-label="Parfum Lux — back to top"
+            aria-label="Parfum Lux — на початок сторінки"
           >
             Parfum<span className="text-champagne"> Lux</span>
           </button>
 
-          <nav className="hidden lg:block" aria-label="Main">
+          <nav className="hidden lg:block" aria-label="Головне меню">
             <ul className="flex items-center gap-10">
               {NAV.map((n) => (
                 <li key={n.id}>
@@ -114,18 +114,18 @@ export function Nav() {
           </nav>
 
           <div className="flex items-center gap-1 sm:gap-2">
-            <button className="icon-btn" onClick={() => setPanel('search')} aria-label="Search">
+            <button className="icon-btn" onClick={() => setPanel('search')} aria-label="Пошук">
               <SearchIcon />
             </button>
-            <button className="icon-btn" onClick={() => setPanel('wishlist')} aria-label={`Wishlist, ${wish} items`}>
+            <button className="icon-btn" onClick={() => setPanel('wishlist')} aria-label={`Обране: ${wish}`}>
               <HeartIcon />
               <Counter n={wish} />
             </button>
-            <button className="icon-btn" onClick={() => setPanel('cart')} aria-label={`Shopping bag, ${count} items`}>
+            <button className="icon-btn" onClick={() => setPanel('cart')} aria-label={`Кошик: ${count}`}>
               <BagIcon />
               <Counter n={count} />
             </button>
-            <button className="icon-btn lg:hidden" onClick={() => setPanel('menu')} aria-label="Open menu">
+            <button className="icon-btn lg:hidden" onClick={() => setPanel('menu')} aria-label="Відкрити меню">
               <MenuIcon />
             </button>
           </div>
@@ -143,13 +143,13 @@ export function Nav() {
             transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
             role="dialog"
             aria-modal="true"
-            aria-label="Menu"
+            aria-label="Меню"
           >
             <div className="container-lux flex items-center justify-between py-6">
               <span className="font-serif text-xl uppercase tracking-[0.28em]">
                 Parfum<span className="text-champagne"> Lux</span>
               </span>
-              <button className="icon-btn" onClick={() => setPanel(null)} aria-label="Close menu">
+              <button className="icon-btn" onClick={() => setPanel(null)} aria-label="Закрити меню">
                 <CloseIcon />
               </button>
             </div>
@@ -174,8 +174,8 @@ export function Nav() {
               ))}
             </ul>
             <div className="container-lux flex gap-3 pb-10">
-              <button className="btn-line flex-1" onClick={() => setPanel('search')}>Search</button>
-              <button className="btn-gold flex-1" onClick={() => setPanel('cart')}>Bag ({count})</button>
+              <button className="btn-line flex-1" onClick={() => setPanel('search')}>Пошук</button>
+              <button className="btn-gold flex-1" onClick={() => setPanel('cart')}>Кошик ({count})</button>
             </div>
           </motion.div>
         )}

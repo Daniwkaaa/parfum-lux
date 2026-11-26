@@ -45,20 +45,20 @@ export function normalizePhone(v: string) {
 export function validate(f: Form): Errors {
   const e: Errors = {}
   const name = f.name.trim()
-  if (!name) e.name = 'Please enter your full name.'
-  else if (name.split(/\s+/).length < 2) e.name = 'Please enter both first and last name.'
-  else if (!/^[\p{L}\s'’-]+$/u.test(name)) e.name = 'Name may contain letters, spaces, apostrophes and hyphens only.'
+  if (!name) e.name = 'Вкажіть, будь ласка, ім’я та прізвище.'
+  else if (name.split(/\s+/).length < 2) e.name = 'Вкажіть і ім’я, і прізвище.'
+  else if (!/^[\p{L}\s'’-]+$/u.test(name)) e.name = 'Ім’я може містити лише літери, пробіли, апостроф і дефіс.'
 
   const d = normalizePhone(f.phone)
-  if (!/^380\d{9}$/.test(d)) e.phone = 'Enter a Ukrainian number, e.g. +380 67 123 45 67.'
+  if (!/^380\d{9}$/.test(d)) e.phone = 'Вкажіть український номер, наприклад +380 67 123 45 67.'
 
-  if (f.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) e.email = 'Please enter a valid email address.'
+  if (f.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) e.email = 'Вкажіть коректну електронну адресу.'
 
-  if (f.city.trim().length < 2) e.city = 'Please enter your city.'
+  if (f.city.trim().length < 2) e.city = 'Вкажіть ваше місто.'
   if (f.delivery === 'branch') {
-    if (!/^\d{1,5}$/.test(f.branch.trim())) e.branch = 'Enter the Nova Poshta branch number (digits only).'
-  } else if (f.address.trim().length < 6) e.address = 'Please enter street, building and apartment.'
-  if (!f.agree) e.agree = 'Please accept the privacy policy to continue.'
+    if (!/^\d{1,5}$/.test(f.branch.trim())) e.branch = 'Вкажіть номер відділення Нової пошти (лише цифри).'
+  } else if (f.address.trim().length < 6) e.address = 'Вкажіть вулицю, будинок і квартиру.'
+  if (!f.agree) e.agree = 'Щоб продовжити, погодьтеся з політикою конфіденційності.'
   return e
 }
 
@@ -127,7 +127,7 @@ export function Checkout() {
     }
     setBusy(true)
     await new Promise((r) => setTimeout(r, 1400))
-    const number = 'PL-' + Date.now().toString(36).toUpperCase().slice(-6)
+    const number = '№ ' + String(Date.now()).slice(-7)
     const order: Placed = {
       number,
       name: f.name.trim().split(/\s+/)[0],
@@ -135,8 +135,8 @@ export function Checkout() {
       lines: cart,
       delivery:
         f.delivery === 'branch'
-          ? `Nova Poshta branch №${f.branch.trim()}, ${f.city.trim()}`
-          : `Courier — ${f.address.trim()}, ${f.city.trim()}`,
+          ? `Нова пошта, відділення №${f.branch.trim()}, ${f.city.trim()}`
+          : `Кур’єр — ${f.address.trim()}, ${f.city.trim()}`,
     }
     try {
       const prev = JSON.parse(localStorage.getItem('parfum-lux-demo-orders') || '[]')
@@ -177,7 +177,7 @@ export function Checkout() {
           <span className="font-serif text-xl uppercase tracking-[0.28em]">
             Parfum<span className="text-champagne"> Lux</span>
           </span>
-          <button className="icon-btn" onClick={() => !busy && setPanel(null)} aria-label="Close checkout">
+          <button className="icon-btn" onClick={() => !busy && setPanel(null)} aria-label="Закрити оформлення замовлення">
             <CloseIcon />
           </button>
         </div>
@@ -192,12 +192,12 @@ export function Checkout() {
             <span className="mx-auto grid h-16 w-16 place-items-center rounded-full border border-champagne text-champagne">
               <CheckIcon width={28} height={28} />
             </span>
-            <p className="eyebrow mt-8">Demo order confirmed</p>
+            <p className="eyebrow mt-8">Демо-замовлення підтверджено</p>
             <h2 id="checkout-title" className="h-display mt-5 text-5xl sm:text-6xl">
-              Thank you, {placed.name}
+              Дякуємо, {placed.name}!
             </h2>
             <p className="mt-6 text-ivory/60">
-              Your demo order <span className="text-champagne">{placed.number}</span> has been recorded in this browser.
+              Ваше демо-замовлення <span className="text-champagne">{placed.number}</span> збережено в цьому браузері.
             </p>
             <div className="mx-auto mt-10 max-w-md border border-ivory/10 p-6 text-left">
               <ul className="space-y-2 text-sm">
@@ -206,7 +206,7 @@ export function Checkout() {
                   return (
                     <li key={`${l.id}-${l.ml}`} className="flex justify-between gap-4 text-ivory/70">
                       <span>
-                        {p?.name} · {l.ml} ml × {l.qty}
+                        {p?.name} · {l.ml} мл × {l.qty}
                       </span>
                       <span>{uah(linePrice(l))}</span>
                     </li>
@@ -215,38 +215,38 @@ export function Checkout() {
               </ul>
               <p className="mt-4 border-t border-ivory/10 pt-4 text-sm text-ivory/50">{placed.delivery}</p>
               <p className="mt-2 flex justify-between font-serif text-2xl">
-                <span>Total</span>
+                <span>Разом</span>
                 <span className="text-champagne">{uah(placed.total)}</span>
               </p>
             </div>
             <p className="mx-auto mt-8 max-w-md text-xs leading-relaxed text-ivory/40">
-              This boutique is a portfolio demonstration: no payment was taken and the order was not transmitted to any
-              store or courier. Connect a backend and payment provider to process real orders.
+              Цей бутик — демонстраційний проєкт для портфоліо: оплату не списано, а замовлення не передано жодному
+              магазину чи службі доставки. Для реальних замовлень потрібно підключити бекенд і платіжний сервіс.
             </p>
             <button className="btn-gold mt-10" onClick={() => setPanel(null)}>
-              Continue Exploring
+              Продовжити перегляд
             </button>
           </motion.div>
         ) : count === 0 ? (
           <div className="py-32 text-center">
-            <h2 id="checkout-title" className="h-display text-5xl">Your bag is empty</h2>
+            <h2 id="checkout-title" className="h-display text-5xl">Ваш кошик порожній</h2>
             <button className="btn-line mt-10" onClick={() => setPanel(null)}>
-              Back to the boutique
+              Повернутися до бутика
             </button>
           </div>
         ) : (
           <div className="grid gap-12 py-10 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
             <form onSubmit={submit} noValidate>
-              <p className="eyebrow">Checkout</p>
-              <h2 id="checkout-title" className="h-display mt-4 text-5xl sm:text-6xl">Delivery details</h2>
+              <p className="eyebrow">Оформлення замовлення</p>
+              <h2 id="checkout-title" className="h-display mt-4 text-5xl sm:text-6xl">Дані для доставки</h2>
 
               <div className="mt-12 grid gap-8 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <Field label="Full name *" error={errors.name} id="co-name">
-                    <input {...aria('name')} className={inputCls('name')} value={f.name} onChange={(e) => upd('name', e.target.value)} autoComplete="name" placeholder="Olena Kovalenko" />
+                  <Field label="Ім’я та прізвище *" error={errors.name} id="co-name">
+                    <input {...aria('name')} className={inputCls('name')} value={f.name} onChange={(e) => upd('name', e.target.value)} autoComplete="name" placeholder="Олена Коваленко" />
                   </Field>
                 </div>
-                <Field label="Phone *" error={errors.phone} id="co-phone">
+                <Field label="Телефон *" error={errors.phone} id="co-phone">
                   <input
                     {...aria('phone')}
                     className={inputCls('phone')}
@@ -257,22 +257,22 @@ export function Checkout() {
                     placeholder="+380 67 123 45 67"
                   />
                 </Field>
-                <Field label="Email (optional)" error={errors.email} id="co-email">
-                  <input {...aria('email')} type="email" className={inputCls('email')} value={f.email} onChange={(e) => upd('email', e.target.value)} autoComplete="email" placeholder="you@example.com" />
+                <Field label="Електронна пошта (необов’язково)" error={errors.email} id="co-email">
+                  <input {...aria('email')} type="email" className={inputCls('email')} value={f.email} onChange={(e) => upd('email', e.target.value)} autoComplete="email" placeholder="Ваша електронна пошта" />
                 </Field>
                 <div className="sm:col-span-2">
-                  <Field label="City *" error={errors.city} id="co-city">
-                    <input {...aria('city')} className={inputCls('city')} value={f.city} onChange={(e) => upd('city', e.target.value)} autoComplete="address-level2" placeholder="Kyiv" />
+                  <Field label="Місто *" error={errors.city} id="co-city">
+                    <input {...aria('city')} className={inputCls('city')} value={f.city} onChange={(e) => upd('city', e.target.value)} autoComplete="address-level2" placeholder="Київ" />
                   </Field>
                 </div>
 
                 <fieldset className="sm:col-span-2">
-                  <legend className="text-[10px] uppercase tracking-wide2 text-ivory/50">Delivery method *</legend>
+                  <legend className="text-[10px] uppercase tracking-wide2 text-ivory/50">Спосіб доставки *</legend>
                   <div className="mt-3 grid gap-3 sm:grid-cols-2">
                     {(
                       [
-                        ['branch', 'Nova Poshta branch', '1–2 days'],
-                        ['courier', 'Courier to door', '1–2 days · Kyiv same day'],
+                        ['branch', 'Відділення Нової пошти', '1–2 дні'],
+                        ['courier', 'Кур’єр до дверей', '1–2 дні · по Києву в день замовлення'],
                       ] as const
                     ).map(([v, t, s]) => (
                       <label
@@ -289,26 +289,26 @@ export function Checkout() {
 
                 <div className="sm:col-span-2">
                   {f.delivery === 'branch' ? (
-                    <Field label="Branch number *" error={errors.branch} id="co-branch">
-                      <input {...aria('branch')} className={inputCls('branch')} value={f.branch} onChange={(e) => upd('branch', e.target.value.replace(/\D/g, '').slice(0, 5))} inputMode="numeric" placeholder="e.g. 24" />
+                    <Field label="Номер відділення *" error={errors.branch} id="co-branch">
+                      <input {...aria('branch')} className={inputCls('branch')} value={f.branch} onChange={(e) => upd('branch', e.target.value.replace(/\D/g, '').slice(0, 5))} inputMode="numeric" placeholder="наприклад, 24" />
                     </Field>
                   ) : (
-                    <Field label="Delivery address *" error={errors.address} id="co-address">
-                      <input {...aria('address')} className={inputCls('address')} value={f.address} onChange={(e) => upd('address', e.target.value)} autoComplete="street-address" placeholder="Street, building, apartment" />
+                    <Field label="Адреса доставки *" error={errors.address} id="co-address">
+                      <input {...aria('address')} className={inputCls('address')} value={f.address} onChange={(e) => upd('address', e.target.value)} autoComplete="street-address" placeholder="Вулиця, будинок, квартира" />
                     </Field>
                   )}
                 </div>
                 <div className="sm:col-span-2">
-                  <Field label="Comment for the concierge" id="co-comment">
-                    <textarea id="co-comment" className="field resize-none" rows={2} value={f.comment} onChange={(e) => upd('comment', e.target.value)} placeholder="Gift wrapping, preferred delivery time…" maxLength={400} />
+                  <Field label="Коментар для консьєржа" id="co-comment">
+                    <textarea id="co-comment" className="field resize-none" rows={2} value={f.comment} onChange={(e) => upd('comment', e.target.value)} placeholder="Подарункове пакування, зручний час доставки…" maxLength={400} />
                   </Field>
                 </div>
 
                 <div className="sm:col-span-2">
-                  <p className="text-[10px] uppercase tracking-wide2 text-ivory/50">Payment</p>
+                  <p className="text-[10px] uppercase tracking-wide2 text-ivory/50">Оплата</p>
                   <p className="mt-3 border border-ivory/15 p-4 text-sm text-ivory/70">
-                    Payment on receipt (cash or card) — online payment requires a connected payment provider and is not
-                    active in this demo.
+                    Оплата під час отримання (готівкою або карткою). Онлайн-оплата потребує підключеного платіжного
+                    сервісу й у демоверсії не діє.
                   </p>
                 </div>
 
@@ -322,11 +322,11 @@ export function Checkout() {
                       className="mt-1 h-4 w-4 accent-[#c9a96e]"
                     />
                     <span>
-                      I agree to the{' '}
+                      Я погоджуюся з{' '}
                       <button type="button" className="text-champagne underline underline-offset-4" onClick={() => setPolicy('privacy')}>
-                        privacy policy
+                        політикою конфіденційності
                       </button>{' '}
-                      and the processing of my data for this order.
+                      та обробкою моїх даних для цього замовлення.
                     </span>
                   </label>
                   {errors.agree && <p id="co-agree-err" className="mt-1.5 text-xs text-red-300" role="alert">{errors.agree}</p>}
@@ -336,19 +336,19 @@ export function Checkout() {
               <button type="submit" disabled={busy} className="btn-gold btn-sweep mt-12 w-full sm:w-auto">
                 {busy ? (
                   <>
-                    <span className="h-3 w-3 animate-spin rounded-full border border-ink border-t-transparent" /> Placing order…
+                    <span className="h-3 w-3 animate-spin rounded-full border border-ink border-t-transparent" /> Оформлюємо…
                   </>
                 ) : (
-                  <>Place Demo Order · {uah(total)}</>
+                  <>Оформити замовлення · {uah(total)}</>
                 )}
               </button>
               <p className="mt-4 text-xs text-ivory/40">
-                Demo checkout: no payment is taken and no order is sent to a store.
+                Демо-оформлення: оплата не списується, замовлення нікуди не надсилається.
               </p>
             </form>
 
             <aside className="h-fit border border-ivory/10 bg-ink-800 p-6 lg:sticky lg:top-8">
-              <h3 className="font-serif text-2xl font-light">Order summary</h3>
+              <h3 className="font-serif text-2xl font-light">Ваше замовлення</h3>
               <div className="mt-4">
                 <CartLines />
               </div>

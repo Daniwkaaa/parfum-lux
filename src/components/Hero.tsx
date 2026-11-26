@@ -14,7 +14,7 @@ function HeroFallback() {
     <div className="absolute inset-0 grid place-items-center">
       <img
         src="/bottles/signature.webp"
-        alt="Parfum Lux signature flacon"
+        alt="Фірмовий флакон Parfum Lux"
         className="h-[62%] w-auto object-contain opacity-90"
       />
     </div>
@@ -53,7 +53,7 @@ export function Hero({ ready }: { ready: boolean }) {
       id="home"
       ref={root}
       className="relative h-[100svh] min-h-[640px] overflow-hidden bg-ink"
-      aria-label="The Art of Exceptional Fragrance"
+      aria-label="Мистецтво вишуканого аромату"
     >
       {/* 3D */}
       <div className="absolute inset-0 [@media(pointer:coarse)]:pointer-events-none" aria-hidden="true">
@@ -84,9 +84,9 @@ export function Hero({ ready }: { ready: boolean }) {
       <div data-hero-content className="pointer-events-none relative z-10 flex h-full flex-col justify-between pb-8 pt-28 sm:pb-10 sm:pt-32">
         <div className="container-lux">
           <div data-hero-fade className="flex items-center gap-4">
-            <span className="eyebrow">Maison Parfum Lux</span>
+            <span className="eyebrow">Бутик Parfum Lux</span>
             <span data-hero-rule className="h-px w-16 bg-champagne/50" />
-            <span className="eyebrow text-ivory/50">Kyiv</span>
+            <span className="eyebrow text-ivory/50">Київ</span>
           </div>
         </div>
 
@@ -94,19 +94,19 @@ export function Hero({ ready }: { ready: boolean }) {
           <span className="container-lux block overflow-hidden">
             <span data-hero-l1 className="block">
               <span data-hero-line className="block text-[11vw] tracking-[-0.01em] text-ivory sm:text-[8vw] lg:text-[6.4vw]">
-                The Art of
+                Мистецтво
               </span>
             </span>
           </span>
           <span className="block overflow-hidden px-2 text-center">
-            <span data-hero-line className="text-outline block text-[14.5vw] italic tracking-[-0.02em] lg:text-[12.5vw]">
-              Exceptional
+            <span data-hero-line className="text-outline block text-[13vw] italic tracking-[-0.02em] lg:text-[11.5vw]">
+              вишуканого
             </span>
           </span>
           <span className="container-lux block overflow-hidden text-right">
             <span data-hero-l3 className="block">
               <span data-hero-line className="block text-[11vw] tracking-[-0.01em] text-ivory sm:text-[8vw] lg:text-[6.4vw]">
-                Fragrance
+                аромату
               </span>
             </span>
           </span>
@@ -115,26 +115,26 @@ export function Hero({ ready }: { ready: boolean }) {
         <div className="container-lux flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-sm">
             <p data-hero-fade className="font-serif text-xl italic text-ivory/80 sm:text-2xl">
-              Discover the world of extraordinary scents.
+              Відкрийте світ надзвичайних ароматів.
             </p>
             <button
               data-hero-fade
               onClick={() => scrollToId('collection')}
               className="btn-gold btn-sweep pointer-events-auto mt-6"
             >
-              Explore Collection <ArrowIcon width={16} height={16} />
+              Переглянути колекцію <ArrowIcon width={16} height={16} />
             </button>
           </div>
           <div data-hero-fade className="hidden items-center gap-8 sm:flex">
             <span className="flex items-center gap-2 text-[10px] uppercase tracking-luxe text-ivory/50 [@media(pointer:coarse)]:hidden">
-              <RotateIcon width={14} height={14} /> Drag to rotate
+              <RotateIcon width={14} height={14} /> Потягніть, щоб обернути
             </span>
             <button
               onClick={() => scrollToId('collection')}
               className="pointer-events-auto flex items-center gap-3 text-[10px] uppercase tracking-luxe text-ivory/60 hover:text-champagne"
-              aria-label="Scroll to collection"
+              aria-label="Прокрутити до колекції"
             >
-              Scroll
+              Гортайте
               <span className="relative block h-12 w-px overflow-hidden bg-ivory/15">
                 <span className="absolute inset-x-0 top-0 h-1/2 animate-[scrollcue_2s_ease-in-out_infinite] bg-champagne" />
               </span>

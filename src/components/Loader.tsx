@@ -26,7 +26,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
       transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }}
       initial={{ clipPath: 'inset(0 0 0% 0)' }}
       role="status"
-      aria-label="Loading"
+      aria-label="Завантаження"
     >
       <motion.p
         initial={{ opacity: 0, letterSpacing: '0.6em' }}

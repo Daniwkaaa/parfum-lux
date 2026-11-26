@@ -36,7 +36,7 @@ export function CartLines({ compact = false }: { compact?: boolean }) {
                     open(p.id)
                   }}
                   className={`shrink-0 bg-[#15110e] ${compact ? 'h-16 w-14' : 'h-24 w-20'}`}
-                  aria-label={`View ${p.name}`}
+                  aria-label={`Переглянути ${p.name}`}
                 >
                   <BottleImage id={p.id} alt="" />
                 </button>
@@ -46,14 +46,14 @@ export function CartLines({ compact = false }: { compact?: boolean }) {
                       <p className="eyebrow truncate text-[9px]">{p.brand}</p>
                       <p className="truncate font-serif text-lg leading-tight">{p.name}</p>
                       <p className="text-[11px] text-ivory/45">
-                        {p.concentration} · {l.ml} ml
+                        {p.concentration} · {l.ml} мл
                       </p>
                     </div>
                     {!compact && (
                       <button
                         className="text-ivory/40 hover:text-champagne"
                         onClick={() => remove(l.id, l.ml)}
-                        aria-label={`Remove ${p.name} ${l.ml} ml`}
+                        aria-label={`Видалити ${p.name} ${l.ml} мл`}
                       >
                         <CloseIcon width={16} height={16} />
                       </button>
@@ -63,8 +63,8 @@ export function CartLines({ compact = false }: { compact?: boolean }) {
                     {compact ? (
                       <span className="text-xs text-ivory/50">× {l.qty}</span>
                     ) : (
-                      <div className="flex items-center border border-ivory/15" role="group" aria-label="Quantity">
-                        <button className="icon-btn h-8 w-8" onClick={() => setQty(l.id, l.ml, l.qty - 1)} aria-label="Decrease quantity">
+                      <div className="flex items-center border border-ivory/15" role="group" aria-label="Кількість">
+                        <button className="icon-btn h-8 w-8" onClick={() => setQty(l.id, l.ml, l.qty - 1)} aria-label="Зменшити кількість">
                           <MinusIcon width={14} height={14} />
                         </button>
                         <span className="w-6 text-center text-xs">{l.qty}</span>
@@ -72,7 +72,7 @@ export function CartLines({ compact = false }: { compact?: boolean }) {
                           className="icon-btn h-8 w-8"
                           onClick={() => setQty(l.id, l.ml, l.qty + 1)}
                           disabled={l.qty >= MAX_QTY}
-                          aria-label="Increase quantity"
+                          aria-label="Збільшити кількість"
                         >
                           <PlusIcon width={14} height={14} />
                         </button>
@@ -95,15 +95,15 @@ export function Totals() {
   return (
     <dl className="space-y-2 text-sm">
       <div className="flex justify-between text-ivory/60">
-        <dt>Subtotal</dt>
+        <dt>Сума</dt>
         <dd>{uah(subtotal)}</dd>
       </div>
       <div className="flex justify-between text-ivory/60">
-        <dt>Delivery</dt>
-        <dd>{shipping === 0 ? 'Complimentary' : uah(shipping)}</dd>
+        <dt>Доставка</dt>
+        <dd>{shipping === 0 ? 'Безкоштовно' : uah(shipping)}</dd>
       </div>
       <div className="flex justify-between border-t border-ivory/10 pt-3 font-serif text-2xl text-ivory">
-        <dt>Total</dt>
+        <dt>Разом</dt>
         <dd className="text-champagne">{uah(total)}</dd>
       </div>
     </dl>
@@ -118,23 +118,23 @@ export function CartDrawer() {
 
   return (
     <Drawer
-      title={`Your Bag${count ? ` (${count})` : ''}`}
+      title={`Кошик${count ? ` (${count})` : ''}`}
       onClose={() => setPanel(null)}
       footer={
         count > 0 ? (
           <div>
             <p className="mb-4 text-[11px] text-ivory/50">
-              {left > 0 ? `Add ${uah(left)} more for complimentary delivery.` : 'Your order qualifies for complimentary delivery.'}
+              {left > 0 ? `Додайте товарів ще на ${uah(left)} — і доставка буде безкоштовною.` : 'Для вашого замовлення доставка безкоштовна.'}
             </p>
             <div className="mb-4 h-px bg-ivory/10">
               <div className="h-px bg-champagne transition-all duration-700" style={{ width: `${Math.min(100, (subtotal / site.freeShippingFrom) * 100)}%` }} />
             </div>
             <Totals />
             <button className="btn-gold btn-sweep mt-6 w-full" onClick={() => setPanel('checkout')}>
-              Proceed to Checkout
+              Оформити замовлення
             </button>
             <button className="mt-3 w-full text-[10px] uppercase tracking-wide2 text-ivory/40 hover:text-champagne" onClick={clear}>
-              Clear bag
+              Очистити кошик
             </button>
           </div>
         ) : undefined
@@ -142,8 +142,8 @@ export function CartDrawer() {
     >
       {count === 0 ? (
         <div className="flex h-full flex-col items-center justify-center text-center">
-          <p className="font-serif text-3xl font-light">Your bag is empty</p>
-          <p className="mt-3 max-w-xs text-sm text-ivory/50">Explore the collection and find the scent that becomes your signature.</p>
+          <p className="font-serif text-3xl font-light">Ваш кошик порожній</p>
+          <p className="mt-3 max-w-xs text-sm text-ivory/50">Перегляньте колекцію й знайдіть аромат, який стане вашим підписом.</p>
           <button
             className="btn-line mt-8"
             onClick={() => {
@@ -151,7 +151,7 @@ export function CartDrawer() {
               setTimeout(() => scrollToId('collection'), 300)
             }}
           >
-            Explore Collection
+            Переглянути колекцію
           </button>
         </div>
       ) : (

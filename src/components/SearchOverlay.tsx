@@ -9,7 +9,7 @@ import { matchesQuery } from './Collection'
 import { BottleImage } from './ProductCard'
 import { CloseIcon, SearchIcon } from './Icons'
 
-const SUGGEST = ['Oud', 'Vanilla', 'Creed', 'Lavender', 'Dior', 'Saffron']
+const SUGGEST = ['Уд', 'Ваніль', 'Creed', 'Лаванда', 'Dior', 'Шафран']
 
 export function SearchOverlay() {
   const { setPanel, openProduct } = useUI()
@@ -44,11 +44,11 @@ export function SearchOverlay() {
       transition={{ duration: 0.4 }}
       role="dialog"
       aria-modal="true"
-      aria-label="Search"
+      aria-label="Пошук"
     >
       <div className="container-lux py-6">
         <div className="flex justify-end">
-          <button className="icon-btn" onClick={() => setPanel(null)} aria-label="Close search">
+          <button className="icon-btn" onClick={() => setPanel(null)} aria-label="Закрити пошук">
             <CloseIcon />
           </button>
         </div>
@@ -58,7 +58,7 @@ export function SearchOverlay() {
           transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto mt-10 max-w-4xl"
         >
-          <p className="eyebrow">Search the boutique</p>
+          <p className="eyebrow">Пошук по бутику</p>
           <label className="mt-6 flex items-center gap-4 border-b border-ivory/20 pb-4 focus-within:border-champagne">
             <SearchIcon width={28} height={28} className="text-ivory/40" />
             <input
@@ -70,9 +70,9 @@ export function SearchOverlay() {
                 if (e.key === 'ArrowUp') { e.preventDefault(); setHi((h) => Math.max(0, h - 1)) }
                 if (e.key === 'Enter' && results[hi]) choose(results[hi].id)
               }}
-              placeholder="Perfume, house or note…"
+              placeholder="Аромат, бренд або нота…"
               className="w-full bg-transparent font-serif text-3xl font-light text-ivory placeholder:text-ivory/25 focus:outline-none sm:text-5xl"
-              aria-label="Search perfumes by name, brand or note"
+              aria-label="Пошук ароматів за назвою, брендом або нотою"
               role="combobox"
               aria-expanded={results.length > 0}
               aria-controls="search-results"
@@ -81,7 +81,7 @@ export function SearchOverlay() {
 
           {!q && (
             <div className="mt-8 flex flex-wrap items-center gap-2">
-              <span className="mr-2 text-[10px] uppercase tracking-wide2 text-ivory/40">Popular:</span>
+              <span className="mr-2 text-[10px] uppercase tracking-wide2 text-ivory/40">Популярне:</span>
               {SUGGEST.map((s) => (
                 <button key={s} onClick={() => setQ(s)} className="chip">{s}</button>
               ))}
@@ -90,7 +90,7 @@ export function SearchOverlay() {
 
           {q && (
             <p className="mt-6 text-[10px] uppercase tracking-wide2 text-ivory/40" aria-live="polite">
-              {results.length} {results.length === 1 ? 'result' : 'results'}
+              Знайдено: {results.length}
             </p>
           )}
           <ul id="search-results" role="listbox" className="mt-4 divide-y divide-ivory/10">
@@ -112,7 +112,7 @@ export function SearchOverlay() {
             ))}
           </ul>
           {q && results.length === 0 && (
-            <p className="mt-10 font-serif text-2xl font-light text-ivory/60">No matches for “{q}”. Try a house or a note such as “vanilla”.</p>
+            <p className="mt-10 font-serif text-2xl font-light text-ivory/60">За запитом «{q}» нічого не знайдено. Спробуйте назву бренду або ноту, наприклад «ваніль».</p>
           )}
         </motion.div>
       </div>

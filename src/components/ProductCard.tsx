@@ -45,7 +45,7 @@ export const ProductCard = forwardRef<HTMLElement, { p: Product; index?: number 
       <button
         onClick={() => open(p.id)}
         className="relative block aspect-[4/5] overflow-hidden bg-[#15110e] focus-visible:outline-none"
-        aria-label={`View details: ${p.brand} ${p.name}`}
+        aria-label={`Детальніше: ${p.brand} ${p.name}`}
       >
         <div
           className="pointer-events-none absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-700 ease-luxe group-hover:opacity-100"
@@ -57,12 +57,12 @@ export const ProductCard = forwardRef<HTMLElement, { p: Product; index?: number 
         />
         <BottleImage
           id={p.id}
-          alt={`${p.brand} ${p.name} — stylised 3D bottle`}
+          alt={`${p.brand} ${p.name} — стилізований 3D-флакон`}
           className="relative transition-transform duration-[1.1s] ease-luxe group-hover:-translate-y-3 group-hover:scale-[1.03]"
         />
         {p.bestseller && (
           <span className="absolute left-4 top-4 border border-champagne/40 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wide2 text-champagne">
-            Bestseller
+            Бестселер
           </span>
         )}
         <span className="absolute bottom-4 left-4 text-[9px] uppercase tracking-luxe text-ivory/30">
@@ -73,11 +73,11 @@ export const ProductCard = forwardRef<HTMLElement, { p: Product; index?: number 
       <button
         onClick={() => {
           toggleWish(p.id)
-          notify(wished ? 'Removed from wishlist' : `${p.name} added to wishlist`)
+          notify(wished ? `${p.name} видалено з обраного` : `${p.name} додано до обраного`)
         }}
         className={`icon-btn absolute right-2 top-2 z-10 ${wished ? 'text-champagne' : ''}`}
         aria-pressed={wished}
-        aria-label={wished ? `Remove ${p.name} from wishlist` : `Add ${p.name} to wishlist`}
+        aria-label={wished ? `Видалити ${p.name} з обраного` : `Додати ${p.name} до обраного`}
       >
         <HeartIcon filled={wished} width={18} height={18} />
       </button>
@@ -87,7 +87,7 @@ export const ProductCard = forwardRef<HTMLElement, { p: Product; index?: number 
         <p className="eyebrow text-[9px]">{p.brand}</p>
         <h3 className="mt-2 font-serif text-2xl font-light leading-tight text-ivory">{p.name}</h3>
         <p className="mt-1 text-[11px] uppercase tracking-wide2 text-ivory/45">
-          {p.concentration} · {p.sizes.map((s) => `${s.ml} ml`).join(' / ')}
+          {p.concentration} · {p.sizes.map((s) => `${s.ml} мл`).join(' / ')}
         </p>
         <div className="grid transition-all duration-700 ease-luxe [grid-template-rows:1fr] lg:[grid-template-rows:0fr] lg:group-focus-within:[grid-template-rows:1fr] lg:group-hover:[grid-template-rows:1fr]">
           <p className="overflow-hidden text-sm leading-relaxed text-ivory/60 opacity-100 transition-opacity duration-700 lg:opacity-0 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100">
@@ -95,21 +95,21 @@ export const ProductCard = forwardRef<HTMLElement, { p: Product; index?: number 
           </p>
         </div>
         <p className="mt-4 font-serif text-xl text-champagne">
-          {p.sizes.length > 1 && <span className="mr-1 font-sans text-[10px] uppercase tracking-wide2 text-ivory/40">from</span>}
+          {p.sizes.length > 1 && <span className="mr-1 font-sans text-[10px] uppercase tracking-wide2 text-ivory/40">від</span>}
           {uah(minPrice(p))}
         </p>
         <div className="mt-5 grid grid-cols-2 gap-2 pt-1">
           <button onClick={() => open(p.id)} className="btn-line px-2 py-3 text-[10px]">
-            View Details
+            Детальніше
           </button>
           <button
             onClick={() => {
               add(p.id, smallest.ml)
-              notify(`${p.name} · ${smallest.ml} ml added to bag`)
+              notify(`${p.name} · ${smallest.ml} мл додано до кошика`)
             }}
             className="btn-gold btn-sweep px-2 py-3 text-[10px]"
           >
-            Add to Cart
+            До кошика
           </button>
         </div>
       </div>

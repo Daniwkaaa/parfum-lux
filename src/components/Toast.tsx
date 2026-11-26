@@ -19,9 +19,9 @@ export function Toast() {
           >
             <CheckIcon width={16} height={16} className="text-champagne" />
             <span>{toast.text}</span>
-            {toast.text.includes('bag') && (
+            {toast.text.includes('кошика') && (
               <button className="text-[10px] font-semibold uppercase tracking-wide2 text-champagne hover:underline" onClick={() => setPanel('cart')}>
-                View bag
+                До кошика
               </button>
             )}
           </motion.div>
