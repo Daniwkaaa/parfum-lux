@@ -10,8 +10,8 @@ export default {
         cocoa: { DEFAULT: '#3b2a1e', light: '#5a4230' },
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        sans: ['Manrope', 'system-ui', 'sans-serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        sans: ['Jost', 'system-ui', 'sans-serif'],
       },
       letterSpacing: { luxe: '0.32em', wide2: '0.18em' },
       transitionTimingFunction: { luxe: 'cubic-bezier(0.22, 1, 0.36, 1)' },

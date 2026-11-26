@@ -6,7 +6,7 @@ import { ArrowIcon } from './Icons'
 
 export function Bestsellers() {
   const open = useUI((s) => s.openProduct)
-  const list = products.filter((p) => p.bestseller)
+  const list = products.filter((p) => p.bestseller).slice(0, 6)
   return (
     <section id="bestsellers" className="relative overflow-hidden bg-ivory py-24 text-ink sm:py-32" aria-labelledby="best-title">
       <div className="container-lux">

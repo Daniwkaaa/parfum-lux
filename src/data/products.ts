@@ -17,15 +17,17 @@
  * parameters — they are NOT official replicas of the houses' packaging.
  */
 
+import { extraProducts } from './catalog-extra'
+
 export type Family = 'fresh' | 'sweet' | 'woody' | 'spicy' | 'floral'
 export type Occasion = 'day' | 'office' | 'evening' | 'special'
 export type Intensity = 'soft' | 'moderate' | 'intense'
 export type Season = 'Весна' | 'Літо' | 'Осінь' | 'Зима'
 
-export type Metal = 'gold' | 'silver' | 'black' | 'gunmetal' | 'bronze'
+export type Metal = 'gold' | 'silver' | 'black' | 'gunmetal' | 'bronze' | 'pearl' | 'rose'
 
 export interface BottleSpec {
-  body: 'box' | 'cylinder' | 'torso' | 'stone'
+  body: 'box' | 'cylinder' | 'torso' | 'stone' | 'octagon' | 'apothecary'
   /** width, height, depth in scene units (height ≈ 2) */
   size: [number, number, number]
   radius: number
@@ -35,7 +37,7 @@ export interface BottleSpec {
   liquid: string
   liquidLevel: number
   cap: {
-    shape: 'box' | 'cylinder' | 'dome' | 'facet'
+    shape: 'box' | 'cylinder' | 'dome' | 'facet' | 'sphere'
     size: [number, number, number]
     metal: Metal
   }
@@ -45,7 +47,7 @@ export interface BottleSpec {
   /** glass base thickness as a fraction of height (default 0.08) */
   base?: number
   label: {
-    kind: 'plate' | 'print'
+    kind: 'plate' | 'print' | 'sticker'
     metal?: Metal
     text: string
     sub: string
@@ -82,7 +84,7 @@ export interface Product {
   bottle: BottleSpec
 }
 
-export const products: Product[] = [
+const coreProducts: Product[] = [
   {
     id: 'ysl-y-edp',
     brand: 'Yves Saint Laurent',
@@ -490,6 +492,8 @@ export const products: Product[] = [
     },
   },
 ]
+
+export const products: Product[] = [...coreProducts, ...extraProducts]
 
 /** ÉLIXIR's own house bottle used in the hero — not a product. */
 export const signatureBottle: BottleSpec = {

@@ -4,7 +4,7 @@ import { createRequire } from 'node:module'
 const { chromium } = createRequire(import.meta.url)('playwright')
 import { writeFileSync, readFileSync } from 'node:fs'
 
-const src = readFileSync(new URL('../src/data/products.ts', import.meta.url), 'utf8')
+const src = ['products.ts', 'catalog-extra.ts'].map((f) => readFileSync(new URL(`../src/data/${f}`, import.meta.url), 'utf8')).join('\n')
 const all = [...src.matchAll(/^\s{4}id: '([^']+)'/gm)].map((m) => m[1])
 const ids = process.argv.slice(2).length ? process.argv.slice(2) : all
 const base = process.env.BASE ?? 'http://localhost:5173'

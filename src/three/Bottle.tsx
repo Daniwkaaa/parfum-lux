@@ -13,6 +13,8 @@ const METALS: Record<Metal, { color: string; metalness: number; roughness: numbe
   black: { color: '#0d0d0e', metalness: 0.35, roughness: 0.22, clearcoat: 1 },
   gunmetal: { color: '#55585e', metalness: 1, roughness: 0.32 },
   bronze: { color: '#7a5434', metalness: 1, roughness: 0.3 },
+  pearl: { color: '#efe9df', metalness: 0.1, roughness: 0.25, clearcoat: 1 },
+  rose: { color: '#d9a08a', metalness: 1, roughness: 0.2 },
 }
 
 function MetalMaterial({ metal, brushed }: { metal: Metal; brushed?: boolean }) {
@@ -92,6 +94,26 @@ function useTorsoGeometry(w: number, h: number) {
   }, [w, h])
 }
 
+/** Laboratory flask: straight walls, rounded shoulder (Le Labo-style). */
+function useApothecaryGeometry(w: number, h: number) {
+  return useMemo(() => {
+    const r = w / 2
+    const pts = [
+      new THREE.Vector2(0, -h / 2),
+      new THREE.Vector2(r * 0.92, -h / 2),
+      new THREE.Vector2(r, -h / 2 + 0.05),
+      new THREE.Vector2(r, h / 2 - r * 0.55),
+      new THREE.Vector2(r * 0.86, h / 2 - r * 0.2),
+      new THREE.Vector2(r * 0.5, h / 2 - 0.02),
+      new THREE.Vector2(r * 0.42, h / 2),
+      new THREE.Vector2(0, h / 2),
+    ]
+    const g = new THREE.LatheGeometry(new THREE.SplineCurve(pts).getPoints(60), 96)
+    g.computeVertexNormals()
+    return g
+  }, [w, h])
+}
+
 function BodyShape({
   spec,
   scale = [1, 1, 1],
@@ -103,8 +125,22 @@ function BodyShape({
 }) {
   const [w, h, d] = spec.size
   const torso = useTorsoGeometry(w, h)
+  const apothecary = useApothecaryGeometry(w, h)
   const [sx, sy, sz] = scale
   switch (spec.body) {
+    case 'octagon':
+      return (
+        <mesh scale={[sx, sy, sz * (d / w)]} rotation={[0, Math.PI / 8, 0]} castShadow>
+          <cylinderGeometry args={[w / 2 / Math.cos(Math.PI / 8), w / 2 / Math.cos(Math.PI / 8), h, 8, 1]} />
+          {children}
+        </mesh>
+      )
+    case 'apothecary':
+      return (
+        <mesh geometry={apothecary} scale={[sx, sy, sz]} castShadow>
+          {children}
+        </mesh>
+      )
     case 'cylinder':
       return (
         <mesh scale={[sx, sy, sz]} castShadow>
@@ -145,8 +181,8 @@ function useFontsReady() {
     const f = document.fonts
     if (!f) return setReady(true)
     Promise.all([
-      f.load('500 120px "Cormorant Garamond"', 'AБВ КИЇВ'),
-      f.load('600 40px Manrope', 'AБВ КИЇВ'),
+      f.load('500 120px "Playfair Display"', 'AБВ КИЇВ'),
+      f.load('500 40px Jost', 'AБВ КИЇВ'),
     ])
       .catch(() => undefined)
       .finally(() => live && setReady(true))
@@ -169,7 +205,7 @@ function useLabelTexture(text: string, sub: string, color: string, fontsReady: b
     ctx.textBaseline = 'middle'
     // main title — auto-fit
     let size = text.length <= 2 ? 300 : 150
-    const serif = (s: number) => `500 ${s}px "Cormorant Garamond", Georgia, serif`
+    const serif = (s: number) => `500 ${s}px "Playfair Display", Georgia, serif`
     ;(ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = '6px'
     ctx.font = serif(size)
     while (ctx.measureText(text).width > 740 && size > 40) {
@@ -179,7 +215,7 @@ function useLabelTexture(text: string, sub: string, color: string, fontsReady: b
     ;(ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = '6px'
     ctx.fillText(text, 512, sub ? 220 : 256)
     if (sub) {
-      ctx.font = '600 38px Manrope, system-ui, sans-serif'
+      ctx.font = '500 38px Jost, system-ui, sans-serif'
       ;(ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = '14px'
       ctx.fillText(sub, 512, 220 + size * 0.5 + 50)
     }
@@ -251,9 +287,16 @@ export function Bottle({ spec, quality = 'high' }: BottleProps) {
 
   // front face for label
   const frontZ = spec.body === 'torso' ? (d / w) * 0.46 * w + 0.006 : d / 2 + 0.004
-  const labelY = spec.body === 'torso' ? h * 0.18 : spec.body === 'cylinder' ? 0 : h * 0.02
+  const labelY =
+    spec.body === 'torso' ? h * 0.18 : spec.body === 'apothecary' ? -h * 0.06 : spec.body === 'cylinder' ? 0 : h * 0.02
   const labelW =
-    spec.body === 'torso' ? w * 0.5 : spec.body === 'stone' ? w * 0.6 : w * (spec.label.kind === 'plate' ? 0.64 : 0.72)
+    spec.body === 'torso'
+      ? w * 0.5
+      : spec.body === 'stone'
+        ? w * 0.6
+        : spec.body === 'cylinder' || spec.body === 'apothecary'
+          ? w * 0.62
+          : w * (spec.label.kind === 'print' ? 0.72 : 0.64)
   const labelH = labelW * 0.5
 
   const collarR = Math.min(w, d) * 0.2
@@ -283,6 +326,12 @@ export function Bottle({ spec, quality = 'high' }: BottleProps) {
 
       {/* Label */}
       <group position={[0, labelY, frontZ]}>
+        {spec.label.kind === 'sticker' && (
+          <mesh position={[0, 0, -0.001]}>
+            <planeGeometry args={[labelW, labelH * 0.86]} />
+            <meshStandardMaterial color="#f4efe4" roughness={0.92} metalness={0} />
+          </mesh>
+        )}
         {spec.label.kind === 'plate' && spec.label.metal && (
           <RoundedBox args={[labelW, labelH * 0.72, 0.012]} radius={0.004} smoothness={2} position={[0, 0, -0.004]}>
             <MetalMaterial metal={spec.label.metal} brushed />
@@ -335,6 +384,12 @@ export function Bottle({ spec, quality = 'high' }: BottleProps) {
           </RoundedBox>
         )}
         {spec.cap.shape === 'facet' && <FacetCap size={spec.cap.size} metal={spec.cap.metal} />}
+        {spec.cap.shape === 'sphere' && (
+          <mesh castShadow scale={[cw / 2, ch / 2, cd / 2]}>
+            <sphereGeometry args={[1, 48, 32]} />
+            <MetalMaterial metal={spec.cap.metal} />
+          </mesh>
+        )}
         {spec.cap.shape === 'dome' && (
           <RoundedBox args={[cw, ch, cd]} radius={Math.min(cw, ch) / 2.2} smoothness={8} castShadow>
             <MetalMaterial metal={spec.cap.metal} />

@@ -1,4 +1,5 @@
 import { brands, products } from '../data/products'
+import { plural } from '../lib/plural'
 import { useFilters } from './Collection'
 import { scrollToId } from '../lib/format'
 
@@ -15,7 +16,8 @@ export function Brands() {
         <div data-reveal>
           <p className="eyebrow">Парфумерні доми</p>
           <h2 id="brands-title" className="h-display mt-4 text-5xl sm:text-6xl">
-            {brands.length} легендарних <em className="text-champagne">брендів</em>
+            {brands.length} {plural(brands.length, ['легендарний', 'легендарні', 'легендарних'])}{' '}
+            <em className="text-champagne">{plural(brands.length, ['бренд', 'бренди', 'брендів'])}</em>
           </h2>
         </div>
         <p data-reveal className="max-w-xs text-xs leading-relaxed text-ivory/45">

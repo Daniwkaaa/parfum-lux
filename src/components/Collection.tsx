@@ -1,4 +1,5 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { plural } from '../lib/plural'
 import { AnimatePresence, motion } from 'framer-motion'
 import { brands, minPrice, products, type Family } from '../data/products'
 import { ProductCard } from './ProductCard'
@@ -57,19 +58,26 @@ export function Collection() {
 
   const filtered = family !== 'all' || brand !== 'all' || query !== ''
 
+  // show the catalogue in pages so 50 flacons never flood the page
+  const PAGE = 12
+  const [shown, setShown] = useState(PAGE)
+  useEffect(() => setShown(PAGE), [family, brand, sort, query])
+  const visible = list.slice(0, shown)
+  const rest = list.length - visible.length
+
   return (
     <section id="collection" className="relative bg-ink py-24 sm:py-32" aria-labelledby="collection-title">
       <div className="container-lux">
         <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <div data-reveal>
-            <p className="eyebrow">Колекція · {products.length} ароматів</p>
+            <p className="eyebrow">Колекція · {products.length} {plural(products.length, ['аромат', 'аромати', 'ароматів'])}</p>
             <h2 id="collection-title" className="h-display mt-5 text-6xl sm:text-7xl lg:text-8xl">
               Обрані <em className="text-champagne">ікони</em>
             </h2>
           </div>
           <p data-reveal className="max-w-md text-sm leading-relaxed text-ivory/55">
-            Десять визначальних ароматів від домів, що сформували сучасну парфумерію. Обертайте й наближайте кожен
-            флакон у нашому 3D-шоурумі, перш ніж зробити вибір.
+            П’ятдесят культових ароматів від люксових і нішевих домів, що визначають сучасну парфумерію. Обертайте
+            й наближайте кожен флакон у нашому 3D-шоурумі, перш ніж зробити вибір.
           </p>
         </div>
 
@@ -142,11 +150,24 @@ export function Collection() {
 
         <motion.div layout className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:gap-7">
           <AnimatePresence mode="popLayout">
-            {list.map((p, i) => (
-              <ProductCard key={p.id} p={p} index={i} />
+            {visible.map((p, i) => (
+              <ProductCard key={p.id} p={p} index={i % PAGE} />
             ))}
           </AnimatePresence>
         </motion.div>
+        {rest > 0 && (
+          <div className="mt-14 flex flex-col items-center gap-4">
+            <p className="text-[10px] uppercase tracking-wide2 text-ivory/40">
+              Показано {visible.length} з {list.length}
+            </p>
+            <div className="h-px w-48 bg-ivory/10">
+              <div className="h-px bg-champagne transition-all duration-700" style={{ width: `${(visible.length / list.length) * 100}%` }} />
+            </div>
+            <button className="btn-line mt-2" onClick={() => setShown((s) => s + PAGE)}>
+              Показати ще {Math.min(PAGE, rest)}
+            </button>
+          </div>
+        )}
         {list.length === 0 && (
           <div className="py-24 text-center">
             <p className="font-serif text-3xl font-light">Жоден аромат не відповідає вибраним параметрам.</p>
