@@ -3,6 +3,7 @@ import { site } from '../data/site'
 import { scrollToId } from '../lib/format'
 import { useUI } from '../store/shop'
 import { ContactForm } from './ContactForm'
+import { Logo } from './Logo'
 
 export function Footer() {
   const setPolicy = useUI((s) => s.setPolicy)
@@ -27,11 +28,10 @@ export function Footer() {
         </div>
         <div className="grid gap-14 border-b border-ivory/10 py-16 md:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <p className="font-serif text-3xl uppercase tracking-[0.28em]">
-              Parfum<span className="text-champagne"> Lux</span>
-            </p>
+            <Logo size="md" />
+            <p className="mt-6 font-serif text-xl italic text-champagne-light">«Аромат, який розповідає твою історію»</p>
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-ivory/50">
-              Бутик ретельно відібраних ароматів, представлених в інтерактивному 3D-шоурумі.
+              Преміальний український магазин оригінальної люксової парфумерії з інтерактивним 3D-шоурумом.
             </p>
             <ul className="mt-8 flex gap-6">
               {site.socials.map((s) => (
@@ -90,15 +90,15 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col gap-4 py-8 text-[10px] uppercase tracking-wide2 text-ivory/30 md:flex-row md:justify-between">
-          <p>© {new Date().getFullYear()} Parfum Lux · Демонстраційний проєкт для портфоліо</p>
+          <p>© {new Date().getFullYear()} ÉLIXIR · Демонстраційний проєкт для портфоліо</p>
           <p className="normal-case tracking-normal">
             Назви брендів і продуктів є торговельними марками їхніх власників. 3D-флакони — стилізовані інтерпретації,
             а не офіційні копії.
           </p>
         </div>
       </div>
-      <p className="pointer-events-none select-none overflow-hidden whitespace-nowrap text-center font-serif text-[19vw] font-light uppercase leading-[0.8] tracking-[0.06em] text-ivory/[0.04]" aria-hidden="true">
-        Parfum Lux
+      <p className="pointer-events-none select-none overflow-hidden whitespace-nowrap text-center font-serif text-[21vw] font-light uppercase leading-[0.8] tracking-[0.14em] text-ivory/[0.04]" aria-hidden="true">
+        Élixir
       </p>
     </footer>
   )

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowIcon, CheckIcon } from './Icons'
 
-const KEY = 'parfum-lux-newsletter'
+const KEY = 'elixir-newsletter'
 const valid = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
 
 export function Newsletter() {

@@ -16,7 +16,7 @@ for (const id of ids) {
   await page.waitForSelector('#thumb canvas')
   await page.waitForTimeout(3500)
   const data = await page.evaluate(() => document.querySelector('#thumb canvas').toDataURL('image/webp', 0.9))
-  writeFileSync(new URL(`../public/bottles/${id}.webp`, import.meta.url), Buffer.from(data.split(',')[1], 'base64'))
+  writeFileSync(new URL(`../src/assets/bottles/${id}.webp`, import.meta.url), Buffer.from(data.split(',')[1], 'base64'))
   console.log('rendered', id)
 }
 await browser.close()

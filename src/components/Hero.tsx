@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { heroState } from '../three/heroState'
+import { bottleImage } from '../lib/bottleImages'
 import { scrollToId } from '../lib/format'
 import { useWebGL } from '../lib/useWebGL'
 import { ArrowIcon, RotateIcon } from './Icons'
@@ -13,8 +14,8 @@ function HeroFallback() {
   return (
     <div className="absolute inset-0 grid place-items-center">
       <img
-        src="/bottles/signature.webp"
-        alt="Фірмовий флакон Parfum Lux"
+        src={bottleImage('signature')}
+        alt="Фірмовий флакон ÉLIXIR"
         className="h-[62%] w-auto object-contain opacity-90"
       />
     </div>
@@ -53,7 +54,7 @@ export function Hero({ ready }: { ready: boolean }) {
       id="home"
       ref={root}
       className="relative h-[100svh] min-h-[640px] overflow-hidden bg-ink"
-      aria-label="Мистецтво вишуканого аромату"
+      aria-label="Твоя історія. Твоя ароматична ідентичність"
     >
       {/* 3D */}
       <div className="absolute inset-0 [@media(pointer:coarse)]:pointer-events-none" aria-hidden="true">
@@ -84,7 +85,7 @@ export function Hero({ ready }: { ready: boolean }) {
       <div data-hero-content className="pointer-events-none relative z-10 flex h-full flex-col justify-between pb-8 pt-28 sm:pb-10 sm:pt-32">
         <div className="container-lux">
           <div data-hero-fade className="flex items-center gap-4">
-            <span className="eyebrow">Бутик Parfum Lux</span>
+            <span className="eyebrow">Люксова парфумерія</span>
             <span data-hero-rule className="h-px w-16 bg-champagne/50" />
             <span className="eyebrow text-ivory/50">Київ</span>
           </div>
@@ -94,35 +95,36 @@ export function Hero({ ready }: { ready: boolean }) {
           <span className="container-lux block overflow-hidden">
             <span data-hero-l1 className="block">
               <span data-hero-line className="block text-[11vw] tracking-[-0.01em] text-ivory sm:text-[8vw] lg:text-[6.4vw]">
-                Мистецтво
+                Твоя історія.
               </span>
             </span>
           </span>
           <span className="block overflow-hidden px-2 text-center">
-            <span data-hero-line className="text-outline block text-[13vw] italic tracking-[-0.02em] lg:text-[11.5vw]">
-              вишуканого
+            <span data-hero-line className="flex items-baseline justify-center gap-[1.5vw]">
+              <span className="font-serif text-[5vw] italic normal-case text-champagne lg:text-[3.6vw]">твоя</span>
+              <span className="text-outline text-[11.5vw] italic tracking-[-0.02em] lg:text-[10vw]">ароматична</span>
             </span>
           </span>
           <span className="container-lux block overflow-hidden text-right">
             <span data-hero-l3 className="block">
               <span data-hero-line className="block text-[11vw] tracking-[-0.01em] text-ivory sm:text-[8vw] lg:text-[6.4vw]">
-                аромату
+                ідентичність
               </span>
             </span>
           </span>
         </h1>
 
         <div className="container-lux flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-sm">
+          <div className="max-w-md">
             <p data-hero-fade className="font-serif text-xl italic text-ivory/80 sm:text-2xl">
-              Відкрийте світ надзвичайних ароматів.
+              Відкрий колекцію ароматів, що залишають незабутнє враження.
             </p>
             <button
               data-hero-fade
               onClick={() => scrollToId('collection')}
               className="btn-gold btn-sweep pointer-events-auto mt-6"
             >
-              Переглянути колекцію <ArrowIcon width={16} height={16} />
+              Відкрити колекцію <ArrowIcon width={16} height={16} />
             </button>
           </div>
           <div data-hero-fade className="hidden items-center gap-8 sm:flex">

@@ -1,6 +1,9 @@
-# Parfum Lux — luxury perfume boutique (3D)
+# ÉLIXIR — цифровий парфумерний бутик
 
-Портфоліо-проєкт: преміальний бутик парфумів з інтерактивним 3D-шоурумом.
+> «Аромат, який розповідає твою історію».
+
+Портфоліо-проєкт: преміальний український магазин оригінальної люксової парфумерії з інтерактивним 3D-шоурумом.
+Увесь інтерфейс українською, ціни в гривнях; назви брендів і ароматів — оригінальні.
 
 **Стек:** React 18 · Vite · TypeScript · Tailwind CSS · Three.js · React Three Fiber · Drei · Framer Motion · GSAP ScrollTrigger · Lenis · Zustand
 
@@ -18,7 +21,8 @@
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # production-збірка в dist/
+npm run build          # production-збірка в dist/
+npm run build:single   # один самодостатній HTML-файл: dist-single/index.html (працює офлайн)
 ```
 
 ## Редагування
@@ -30,7 +34,7 @@ npm run build    # production-збірка в dist/
 | Кольори та шрифти | `tailwind.config.js`, `src/index.css` |
 
 Після зміни параметрів флакона перегенеруйте превʼю:
-`npm run dev`, потім `node scripts/render-thumbs.mjs [id]` (потрібен Playwright) → `public/bottles/*.webp`.
+`npm run dev`, потім `node scripts/render-thumbs.mjs [id]` (потрібен Playwright) → `src/assets/bottles/*.webp`.
 
 ## Тестування
 

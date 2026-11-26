@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckIcon } from './Icons'
 
-const KEY = 'parfum-lux-demo-messages'
+const KEY = 'elixir-demo-messages'
 interface F { name: string; contact: string; topic: string; message: string }
 type E = Partial<Record<keyof F, string>>
 

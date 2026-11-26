@@ -3,6 +3,7 @@ const { chromium, devices } = createRequire(import.meta.url)('playwright')
 // End-to-end QA: node scripts/qa.mjs <screenshot-dir>  (BASE env, default dev server)
 const out = process.argv[2] ?? '.'
 const BASE = process.env.BASE ?? 'http://localhost:5173'
+const PAGE = process.env.PAGE ?? BASE + '/'
 const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] })
 const results = []
 const ok = (name, cond, extra = '') => results.push(`${cond ? 'PASS' : 'FAIL'}  ${name} ${extra}`)
@@ -18,7 +19,7 @@ const dialogs = p => p.locator('[role=dialog]').count()
 try {
 // ---------- DESKTOP ----------
 const p = await b.newPage({ viewport: { width: 1440, height: 900 } }); watch(p, 'desk')
-await p.goto(BASE + '/'); await p.waitForTimeout(4500)
+await p.goto(PAGE); await p.waitForTimeout(4500)
 ok('hero canvas rendered', await p.locator('#home canvas').count() === 1)
 ok('no broken images', await p.evaluate(async () => { const imgs = [...document.images]; imgs.forEach(i => (i.loading = 'eager')); await Promise.all(imgs.map(i => i.decode().catch(() => null))); return imgs.every(i => i.naturalWidth > 0) }))
 // nav links
@@ -28,7 +29,7 @@ for (const [label, id] of [['Колекція', 'collection'], ['Бренди', 
   ok(`nav → ${label}`, Math.abs(top - (id === 'home' ? 0 : 72)) < 30, `top=${top}`)
   ok(`nav active ${label}`, (await p.getAttribute(`header nav button:has-text("${label}")`, 'aria-current')) === 'true')
 }
-await p.click('#home button:has-text("Переглянути колекцію")'); await p.waitForTimeout(1700)
+await p.click('#home button:has-text("Відкрити колекцію")'); await p.waitForTimeout(1700)
 ok('hero CTA scrolls', Math.abs(await p.evaluate(() => document.getElementById('collection').getBoundingClientRect().top) - 72) < 30)
 // cards
 await p.locator('#collection button:has-text("До кошика")').first().click(); await p.waitForTimeout(400)
@@ -197,14 +198,14 @@ ok('social links valid', links.every(h => h.startsWith('https://')), links.join(
 await p.reload(); await p.waitForTimeout(3500)
 ok('cart persists', (await bag(p)).includes(': 2'))
 // deep link
-await p.goto(BASE + '/?p=pdm-layton'); await p.waitForTimeout(4500)
+await p.goto(PAGE + '?p=pdm-layton'); await p.waitForTimeout(4500)
 ok('deep link opens product', (await p.locator('#product-title').innerText()) === 'Layton')
 await p.close()
 
 // ---------- MOBILE ----------
 const ctx = await b.newContext({ ...devices['iPhone 13'], deviceScaleFactor: 1 })
 const m = await ctx.newPage(); watch(m, 'mob')
-await m.goto(BASE + '/'); await m.waitForTimeout(4500)
+await m.goto(PAGE); await m.waitForTimeout(4500)
 ok('mobile no horizontal scroll', await m.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
 await m.click('header button[aria-label="Відкрити меню"]'); await m.waitForTimeout(1000)
 await m.keyboard.press('Escape'); await m.waitForTimeout(900)
@@ -229,7 +230,7 @@ await m.evaluate(() => document.getElementById('contacts').scrollIntoView()); aw
 await m.screenshot({ path: `${out}/qa-m-contacts.png` })
 // tablet
 const t = await b.newPage({ viewport: { width: 820, height: 1180 } }); watch(t, 'tab')
-await t.goto(BASE + '/'); await t.waitForTimeout(4000)
+await t.goto(PAGE); await t.waitForTimeout(4000)
 ok('tablet no horizontal scroll', await t.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
 await t.screenshot({ path: `${out}/qa-tablet.png` })
 

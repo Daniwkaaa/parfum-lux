@@ -1,6 +1,7 @@
 import { useRef, useState, type ReactNode } from 'react'
 import { useFocusTrap } from '../lib/useFocusTrap'
 import { useEscape } from '../lib/useEscape'
+import { Logo } from './Logo'
 import { motion } from 'framer-motion'
 import { getProduct } from '../data/products'
 import { linePrice, useCartTotals, useShop, useUI, type CartLine } from '../store/shop'
@@ -139,9 +140,9 @@ export function Checkout() {
           : `Кур’єр — ${f.address.trim()}, ${f.city.trim()}`,
     }
     try {
-      const prev = JSON.parse(localStorage.getItem('parfum-lux-demo-orders') || '[]')
+      const prev = JSON.parse(localStorage.getItem('elixir-demo-orders') || '[]')
       localStorage.setItem(
-        'parfum-lux-demo-orders',
+        'elixir-demo-orders',
         JSON.stringify([...prev, { ...order, createdAt: new Date().toISOString() }]),
       )
     } catch {
@@ -174,9 +175,7 @@ export function Checkout() {
     >
       <div className="container-lux py-6">
         <div className="flex items-center justify-between">
-          <span className="font-serif text-xl uppercase tracking-[0.28em]">
-            Parfum<span className="text-champagne"> Lux</span>
-          </span>
+          <Logo size="sm" />
           <button className="icon-btn" onClick={() => !busy && setPanel(null)} aria-label="Закрити оформлення замовлення">
             <CloseIcon />
           </button>

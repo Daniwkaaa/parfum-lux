@@ -68,7 +68,7 @@ export const useShop = create<ShopState>()(
           wishlist: s.wishlist.includes(id) ? s.wishlist.filter((w) => w !== id) : [...s.wishlist, id],
         })),
     }),
-    { name: 'parfum-lux-shop', storage: safeStorage, version: 1 },
+    { name: 'elixir-shop', storage: safeStorage, version: 1 },
   ),
 )
 

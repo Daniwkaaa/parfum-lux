@@ -1,4 +1,5 @@
 import { forwardRef } from 'react'
+import { bottleImage } from '../lib/bottleImages'
 import { motion } from 'framer-motion'
 import type { Product } from '../data/products'
 import { minPrice } from '../data/products'
@@ -9,7 +10,7 @@ import { HeartIcon } from './Icons'
 export function BottleImage({ id, alt, className = '' }: { id: string; alt: string; className?: string }) {
   return (
     <img
-      src={`/bottles/${id}.webp`}
+      src={bottleImage(id)}
       alt={alt}
       loading="lazy"
       decoding="async"

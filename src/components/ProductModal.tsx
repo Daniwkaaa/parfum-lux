@@ -274,7 +274,11 @@ export function ProductModal() {
     if ((id ?? null) === cur) return
     if (id) url.searchParams.set('p', id)
     else url.searchParams.delete('p')
-    history.pushState(null, '', url)
+    try {
+      history.pushState(null, '', url)
+    } catch {
+      /* file:// pages cannot change the URL — deep links are optional */
+    }
   }, [id])
 
   useEscape(() => openProduct(null), !!p)

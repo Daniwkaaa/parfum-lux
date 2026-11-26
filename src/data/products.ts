@@ -491,7 +491,7 @@ export const products: Product[] = [
   },
 ]
 
-/** The boutique's own house bottle used in the hero — not a product. */
+/** ÉLIXIR's own house bottle used in the hero — not a product. */
 export const signatureBottle: BottleSpec = {
   body: 'box',
   size: [1.05, 1.6, 0.66],
@@ -504,7 +504,7 @@ export const signatureBottle: BottleSpec = {
   collar: 'gold',
   collarRings: true,
   base: 0.14,
-  label: { kind: 'plate', metal: 'gold', text: 'PARFUM LUX', sub: 'КИЇВ', color: '#2b1c08' },
+  label: { kind: 'plate', metal: 'gold', text: 'ÉLIXIR', sub: 'КИЇВ', color: '#2b1c08' },
 }
 
 export const brands = Array.from(new Set(products.map((p) => p.brand)))

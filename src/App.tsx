@@ -17,6 +17,7 @@ import { SearchOverlay } from './components/SearchOverlay'
 import { Checkout } from './components/Checkout'
 import { PolicyModal } from './components/PolicyModal'
 import { Toast } from './components/Toast'
+import { Ornament } from './components/Logo'
 import { useUI } from './store/shop'
 import { useRevealAnimations, useSmoothScroll } from './lib/useSmoothScroll'
 
@@ -38,10 +39,12 @@ export default function App() {
       <main>
         <Hero ready={!loading} />
         <Collection />
+        <Ornament />
         <Bestsellers />
         <Quiz />
         <Brands />
         <About />
+        <Ornament />
         <Newsletter />
       </main>
       <Footer />

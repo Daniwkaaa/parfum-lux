@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useEscape } from '../lib/useEscape'
+import { Logo } from './Logo'
 import { useFocusTrap } from '../lib/useFocusTrap'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BagIcon, CloseIcon, HeartIcon, MenuIcon, SearchIcon } from './Icons'
@@ -84,10 +85,10 @@ export function Nav() {
         <div className="container-lux flex items-center justify-between">
           <button
             onClick={() => go('home')}
-            className="font-serif text-xl uppercase tracking-[0.28em] text-ivory transition-colors hover:text-champagne sm:text-2xl"
-            aria-label="Parfum Lux — на початок сторінки"
+            className="text-ivory transition-opacity hover:opacity-80"
+            aria-label="ÉLIXIR — на початок сторінки"
           >
-            Parfum<span className="text-champagne"> Lux</span>
+            <Logo />
           </button>
 
           <nav className="hidden lg:block" aria-label="Головне меню">
@@ -146,9 +147,7 @@ export function Nav() {
             aria-label="Меню"
           >
             <div className="container-lux flex items-center justify-between py-6">
-              <span className="font-serif text-xl uppercase tracking-[0.28em]">
-                Parfum<span className="text-champagne"> Lux</span>
-              </span>
+              <Logo />
               <button className="icon-btn" onClick={() => setPanel(null)} aria-label="Закрити меню">
                 <CloseIcon />
               </button>

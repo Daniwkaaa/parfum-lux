@@ -4,7 +4,8 @@
  * policies only show them when they are filled in.
  */
 export const site = {
-  name: 'Parfum Lux',
+  name: 'ÉLIXIR',
+  slogan: 'Аромат, який розповідає твою історію',
   city: 'Київ, Україна',
   address: 'Київ, Україна — приватний шоурум за попереднім записом',
   hours: 'Пн–Сб · 10:00–20:00',

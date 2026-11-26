@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { Logo } from './Logo'
 
 export function Loader({ onDone }: { onDone: () => void }) {
   const [pct, setPct] = useState(0)
@@ -28,14 +29,15 @@ export function Loader({ onDone }: { onDone: () => void }) {
       role="status"
       aria-label="Завантаження"
     >
-      <motion.p
-        initial={{ opacity: 0, letterSpacing: '0.6em' }}
-        animate={{ opacity: 1, letterSpacing: '0.32em' }}
+      <motion.div
+        initial={{ opacity: 0, y: 12, filter: 'blur(8px)' }}
+        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-        className="font-serif text-3xl font-light uppercase text-ivory sm:text-4xl"
+        className="flex flex-col items-center text-ivory"
       >
-        Parfum Lux
-      </motion.p>
+        <Logo size="lg" />
+        <p className="mt-5 font-serif text-lg italic text-ivory/50">Аромат, який розповідає твою історію</p>
+      </motion.div>
       <div className="mt-8 h-px w-48 overflow-hidden bg-ivory/10">
         <div className="h-full bg-champagne transition-[width] duration-200" style={{ width: `${pct}%` }} />
       </div>
