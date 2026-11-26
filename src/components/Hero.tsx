@@ -78,7 +78,7 @@ export function Hero({ ready }: { ready: boolean }) {
         className="pointer-events-none absolute inset-0"
         style={{ background: 'radial-gradient(ellipse at center, transparent 45%, rgba(10,9,8,0.85) 100%)' }}
       />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink to-transparent" />
 
       {/* Editorial type */}
       <div data-hero-content className="pointer-events-none relative z-10 flex h-full flex-col justify-between pb-8 pt-28 sm:pb-10 sm:pt-32">

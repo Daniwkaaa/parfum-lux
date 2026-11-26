@@ -1,5 +1,7 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEscape } from '../lib/useEscape'
+import { useFocusTrap } from '../lib/useFocusTrap'
 import { getProduct, products, type Product } from '../data/products'
 import { MAX_QTY, useShop, useUI } from '../store/shop'
 import { uah } from '../lib/format'
@@ -275,12 +277,8 @@ export function ProductModal() {
     history.pushState(null, '', url)
   }, [id])
 
-  useEffect(() => {
-    if (!p) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && openProduct(null)
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [p, openProduct])
+  useEscape(() => openProduct(null), !!p)
+  useFocusTrap(scroller, !!p)
 
   return (
     <AnimatePresence>

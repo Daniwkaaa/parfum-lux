@@ -35,11 +35,15 @@ export interface BottleSpec {
   liquid: string
   liquidLevel: number
   cap: {
-    shape: 'box' | 'cylinder' | 'dome'
+    shape: 'box' | 'cylinder' | 'dome' | 'facet'
     size: [number, number, number]
     metal: Metal
   }
   collar: Metal
+  /** stacked metal rings at the neck */
+  collarRings?: boolean
+  /** glass base thickness as a fraction of height (default 0.08) */
+  base?: number
   label: {
     kind: 'plate' | 'print'
     metal?: Metal
@@ -494,10 +498,12 @@ export const signatureBottle: BottleSpec = {
   radius: 0.12,
   glass: '#fbf4e8',
   tint: 0.04,
-  liquid: '#d9a95a',
-  liquidLevel: 0.78,
-  cap: { shape: 'box', size: [0.5, 0.62, 0.5], metal: 'gold' },
+  liquid: '#b8741f',
+  liquidLevel: 0.8,
+  cap: { shape: 'facet', size: [0.78, 0.4, 0.56], metal: 'gold' },
   collar: 'gold',
+  collarRings: true,
+  base: 0.14,
   label: { kind: 'plate', metal: 'gold', text: 'PARFUM LUX', sub: 'MAISON · KYIV', color: '#2b1c08' },
 }
 

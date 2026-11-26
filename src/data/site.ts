@@ -1,15 +1,15 @@
 /**
- * Boutique contact details & settings — replace with your own.
- * The values below are demo values for the portfolio build.
+ * Boutique settings — edit to match your business.
+ * Add `phone` / `email` when you have real contact details; the footer and
+ * policies only show them when they are filled in.
  */
 export const site = {
   name: 'Parfum Lux',
   city: 'Kyiv, Ukraine',
-  address: 'Kyiv, Ukraine — showroom by appointment',
-  phoneDisplay: '+380 00 000 00 00',
-  phoneHref: 'tel:+380000000000',
-  email: 'concierge@parfumlux.example',
+  address: 'Kyiv, Ukraine — private showroom, by appointment',
   hours: 'Mon–Sat · 10:00–20:00',
+  phone: '' as string, // e.g. '+380 67 123 45 67'
+  email: '' as string, // e.g. 'concierge@yourdomain.com'
   freeShippingFrom: 5000,
   shippingCost: 150,
   socials: [

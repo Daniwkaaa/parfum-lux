@@ -169,7 +169,7 @@ function useLabelTexture(text: string, sub: string, color: string, fontsReady: b
     const serif = (s: number) => `500 ${s}px "Cormorant Garamond", Georgia, serif`
     ;(ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = '6px'
     ctx.font = serif(size)
-    while (ctx.measureText(text).width > 840 && size > 40) {
+    while (ctx.measureText(text).width > 740 && size > 40) {
       size -= 6
       ctx.font = serif(size)
     }
@@ -192,6 +192,45 @@ function useLabelTexture(text: string, sub: string, color: string, fontsReady: b
 /* Bottle                                                               */
 /* ------------------------------------------------------------------ */
 
+/** Box cap with a low faceted pyramid crown — catches light like cut metal. */
+function FacetCap({ size: [w, h, d], metal }: { size: [number, number, number]; metal: Metal }) {
+  const geo = useMemo(() => {
+    const crown = h * 0.45
+    const body = h - crown
+    const g = new THREE.BufferGeometry()
+    const x = w / 2
+    const z = d / 2
+    const y0 = -h / 2
+    const y1 = y0 + body
+    const apexW = w * 0.18
+    const v = [
+      // bottom ring 0-3, top-of-body ring 4-7, ridge 8-9
+      [-x, y0, -z], [x, y0, -z], [x, y0, z], [-x, y0, z],
+      [-x, y1, -z], [x, y1, -z], [x, y1, z], [-x, y1, z],
+      [-apexW, h / 2, 0], [apexW, h / 2, 0],
+    ]
+    const faces = [
+      [0, 2, 1], [0, 3, 2], // bottom
+      [0, 1, 5], [0, 5, 4], [1, 2, 6], [1, 6, 5], [2, 3, 7], [2, 7, 6], [3, 0, 4], [3, 4, 7], // sides
+      [4, 5, 9], [4, 9, 8], // back slope
+      [6, 7, 8], [6, 8, 9], // front slope
+      [5, 6, 9], // right facet
+      [7, 4, 8], // left facet
+    ]
+    const pos: number[] = []
+    // faces above are listed clockwise; reverse to get outward-facing normals
+    faces.forEach((f) => [...f].reverse().forEach((i) => pos.push(...v[i])))
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3))
+    g.computeVertexNormals() // flat (non-indexed) normals → crisp facets
+    return g
+  }, [w, h, d])
+  return (
+    <mesh geometry={geo} castShadow>
+      <MetalMaterial metal={metal} />
+    </mesh>
+  )
+}
+
 export interface BottleProps {
   spec: BottleSpec
   quality?: 'high' | 'low'
@@ -202,9 +241,10 @@ export function Bottle({ spec, quality = 'high' }: BottleProps) {
   const fontsReady = useFontsReady()
   const tex = useLabelTexture(spec.label.text, spec.label.sub, spec.label.color, fontsReady)
 
-  const wall = 0.07
-  const liqH = spec.liquidLevel * 0.9
-  const liquidY = -h / 2 + wall + (h * liqH) / 2
+  // thick glass base, like real flacons: the juice starts above it
+  const base = h * (spec.base ?? 0.08)
+  const liqH = Math.min(spec.liquidLevel * 0.92, 1 - (spec.base ?? 0.08) - 0.06)
+  const liquidY = -h / 2 + base + (h * liqH) / 2
 
   // front face for label
   const frontZ = spec.body === 'torso' ? (d / w) * 0.46 * w + 0.006 : d / 2 + 0.004
@@ -214,7 +254,7 @@ export function Bottle({ spec, quality = 'high' }: BottleProps) {
   const labelH = labelW * 0.5
 
   const collarR = Math.min(w, d) * 0.2
-  const collarH = 0.12
+  const collarH = spec.collarRings ? 0.2 : 0.12
   const [cw, ch, cd] = spec.cap.size
   const capY = h / 2 + collarH + ch / 2 - 0.01
 
@@ -258,10 +298,25 @@ export function Bottle({ spec, quality = 'high' }: BottleProps) {
       </group>
 
       {/* Collar / neck */}
-      <mesh position={[0, h / 2 + collarH / 2 - 0.01, 0]} castShadow>
-        <cylinderGeometry args={[collarR, collarR * 1.08, collarH, 48]} />
-        <MetalMaterial metal={spec.collar} />
-      </mesh>
+      {spec.collarRings ? (
+        <group position={[0, h / 2 - 0.01, 0]}>
+          <mesh position={[0, collarH / 2, 0]}>
+            <cylinderGeometry args={[collarR * 0.9, collarR * 0.9, collarH, 48]} />
+            <MetalMaterial metal={spec.collar} />
+          </mesh>
+          {[0.035, 0.1, 0.165].map((y) => (
+            <mesh key={y} position={[0, y, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+              <torusGeometry args={[collarR * 0.93, 0.018, 16, 64]} />
+              <MetalMaterial metal={spec.collar} />
+            </mesh>
+          ))}
+        </group>
+      ) : (
+        <mesh position={[0, h / 2 + collarH / 2 - 0.01, 0]} castShadow>
+          <cylinderGeometry args={[collarR, collarR * 1.08, collarH, 48]} />
+          <MetalMaterial metal={spec.collar} />
+        </mesh>
+      )}
 
       {/* Cap */}
       <group position={[0, capY, 0]}>
@@ -276,6 +331,7 @@ export function Bottle({ spec, quality = 'high' }: BottleProps) {
             <MetalMaterial metal={spec.cap.metal} />
           </RoundedBox>
         )}
+        {spec.cap.shape === 'facet' && <FacetCap size={spec.cap.size} metal={spec.cap.metal} />}
         {spec.cap.shape === 'dome' && (
           <RoundedBox args={[cw, ch, cd]} radius={Math.min(cw, ch) / 2.2} smoothness={8} castShadow>
             <MetalMaterial metal={spec.cap.metal} />

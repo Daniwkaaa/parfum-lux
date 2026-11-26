@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useFocusTrap } from '../lib/useFocusTrap'
+import { useEscape } from '../lib/useEscape'
 import { products, minPrice } from '../data/products'
 import { useUI } from '../store/shop'
 import { uah } from '../lib/format'
@@ -18,11 +20,13 @@ export function SearchOverlay() {
 
   useEffect(() => {
     input.current?.focus()
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setPanel(null)
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [setPanel])
-  useEffect(() => setHi(0), [q])
+  }, [])
+  useEscape(() => setPanel(null))
+  const root = useRef<HTMLDivElement>(null)
+  useFocusTrap(root, true, 'input')
+  useEffect(() => {
+    setHi(0)
+  }, [q])
 
   const choose = (id: string) => {
     setPanel(null)
@@ -31,6 +35,7 @@ export function SearchOverlay() {
 
   return (
     <motion.div
+      ref={root}
       className="fixed inset-0 z-50 overflow-y-auto bg-ink/95 backdrop-blur-xl"
       data-lenis-prevent
       initial={{ opacity: 0 }}

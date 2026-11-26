@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useEscape } from '../lib/useEscape'
+import { useFocusTrap } from '../lib/useFocusTrap'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BagIcon, CloseIcon, HeartIcon, MenuIcon, SearchIcon } from './Icons'
 import { useCartTotals, useShop, useUI } from '../store/shop'
@@ -15,10 +17,13 @@ export const NAV = [
 function useActive() {
   const [active, setActive] = useState('home')
   useEffect(() => {
-    const els = NAV.map((n) => document.getElementById(n.id)).filter(Boolean) as HTMLElement[]
+    // sections that are not in the menu highlight their closest menu item
+    const alias: Record<string, string> = { bestsellers: 'collection', discover: 'collection', newsletter: 'about' }
+    const ids = [...NAV.map((n) => n.id), ...Object.keys(alias)]
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[]
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => e.isIntersecting && setActive(e.target.id))
+        entries.forEach((e) => e.isIntersecting && setActive(alias[e.target.id] ?? e.target.id))
       },
       { rootMargin: '-45% 0px -50% 0px' },
     )
@@ -59,6 +64,10 @@ export function Nav() {
     window.addEventListener('scroll', on, { passive: true })
     return () => window.removeEventListener('scroll', on)
   }, [])
+
+  const menuRef = useRef<HTMLDivElement>(null)
+  useEscape(() => setPanel(null), panel === 'menu')
+  useFocusTrap(menuRef, panel === 'menu')
 
   const go = (id: string) => {
     setPanel(null)
@@ -126,6 +135,7 @@ export function Nav() {
       <AnimatePresence>
         {panel === 'menu' && (
           <motion.div
+            ref={menuRef}
             className="fixed inset-0 z-50 flex flex-col bg-ink lg:hidden"
             initial={{ clipPath: 'circle(0% at 100% 0%)' }}
             animate={{ clipPath: 'circle(150% at 100% 0%)' }}

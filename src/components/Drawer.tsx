@@ -1,4 +1,6 @@
-import { useEffect, type ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
+import { useFocusTrap } from '../lib/useFocusTrap'
+import { useEscape } from '../lib/useEscape'
 import { motion } from 'framer-motion'
 import { CloseIcon } from './Icons'
 
@@ -15,11 +17,9 @@ export function Drawer({
   footer?: ReactNode
   side?: 'right' | 'left'
 }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  useEscape(onClose)
+  const panel = useRef<HTMLElement>(null)
+  useFocusTrap(panel)
 
   return (
     <motion.div className="fixed inset-0 z-50" initial="hidden" animate="show" exit="hidden">
@@ -32,6 +32,7 @@ export function Drawer({
         tabIndex={-1}
       />
       <motion.aside
+        ref={panel}
         role="dialog"
         aria-modal="true"
         aria-label={title}

@@ -2,6 +2,7 @@ import { NAV } from './Nav'
 import { site } from '../data/site'
 import { scrollToId } from '../lib/format'
 import { useUI } from '../store/shop'
+import { ContactForm } from './ContactForm'
 
 export function Footer() {
   const setPolicy = useUI((s) => s.setPolicy)
@@ -9,8 +10,22 @@ export function Footer() {
   return (
     <footer id="contacts" className="bg-ink pt-24" aria-labelledby="contacts-title">
       <div className="container-lux">
-        <h2 id="contacts-title" className="sr-only">Contacts</h2>
-        <div className="grid gap-14 border-b border-ivory/10 pb-16 md:grid-cols-2 lg:grid-cols-12">
+        <div className="grid gap-12 border-b border-ivory/10 pb-20 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <p data-reveal className="eyebrow">Contacts</p>
+            <h2 id="contacts-title" data-reveal className="h-display mt-5 text-5xl sm:text-6xl">
+              Speak with our <em className="text-champagne">concierge</em>
+            </h2>
+            <p data-reveal className="mt-6 max-w-sm text-sm leading-relaxed text-ivory/55">
+              Personal recommendations, showroom appointments, corporate gifting — leave a request and we will get back
+              to you within one working day.
+            </p>
+          </div>
+          <div data-reveal className="lg:col-span-6 lg:col-start-7">
+            <ContactForm />
+          </div>
+        </div>
+        <div className="grid gap-14 border-b border-ivory/10 py-16 md:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <p className="font-serif text-3xl uppercase tracking-[0.28em]">
               Parfum<span className="text-champagne"> Lux</span>
@@ -46,9 +61,18 @@ export function Footer() {
             <p className="eyebrow">Contact</p>
             <address className="mt-6 space-y-3 text-sm not-italic text-ivory/60">
               <p>{site.address}</p>
-              <p><a href={site.phoneHref} className="hover:text-champagne">{site.phoneDisplay}</a></p>
-              <p><a href={`mailto:${site.email}`} className="hover:text-champagne">{site.email}</a></p>
               <p>{site.hours}</p>
+              {site.phone && (
+                <p><a href={`tel:${site.phone.replace(/[^\d+]/g, '')}`} className="hover:text-champagne">{site.phone}</a></p>
+              )}
+              {site.email && (
+                <p><a href={`mailto:${site.email}`} className="hover:text-champagne">{site.email}</a></p>
+              )}
+              <p>
+                <button onClick={() => document.getElementById('cf-name')?.focus()} className="text-champagne hover:underline">
+                  Write to the concierge →
+                </button>
+              </p>
             </address>
           </div>
 

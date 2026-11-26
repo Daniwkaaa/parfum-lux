@@ -1,4 +1,6 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
+import { useFocusTrap } from '../lib/useFocusTrap'
+import { useEscape } from '../lib/useEscape'
 import { motion } from 'framer-motion'
 import { getProduct } from '../data/products'
 import { linePrice, useCartTotals, useShop, useUI, type CartLine } from '../store/shop'
@@ -103,11 +105,9 @@ export function Checkout() {
   const [busy, setBusy] = useState(false)
   const [placed, setPlaced] = useState<Placed | null>(null)
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && !busy && setPanel(null)
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [busy, setPanel])
+  useEscape(() => !busy && setPanel(null))
+  const root = useRef<HTMLDivElement>(null)
+  useFocusTrap(root, true, '#co-name')
 
   const upd = <K extends keyof Form>(k: K, v: Form[K]) => {
     const next = { ...f, [k]: v }
@@ -161,6 +161,7 @@ export function Checkout() {
 
   return (
     <motion.div
+      ref={root}
       className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-ink"
       data-lenis-prevent
       initial={{ opacity: 0, y: 40 }}

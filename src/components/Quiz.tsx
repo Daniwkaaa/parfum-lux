@@ -26,18 +26,8 @@ const INT: { id: Intensity; label: string; hint: string }[] = [
   { id: 'intense', label: 'Intense', hint: 'A trail that lingers in the room' },
 ]
 
-const STEPS = ['Which scents draw you in?', 'Where will you wear it?', 'How present should it be?']
-
-export function Quiz() {
-  const [step, setStep] = useState(0)
-  const [a, setA] = useState<QuizAnswers>({ families: [], occasion: null, intensity: null })
-  const { openProduct, notify } = useUI()
-  const add = useShop((s) => s.add)
-
-  const canNext = step === 0 ? a.families.length > 0 : step === 1 ? !!a.occasion : !!a.intensity
-  const results = step === 3 ? recommend(a).slice(0, 3) : []
-
-  const Option = ({ active, onClick, label, hint }: { active: boolean; onClick: () => void; label: string; hint: string }) => (
+function Option({ active, onClick, label, hint }: { active: boolean; onClick: () => void; label: string; hint: string }) {
+  return (
     <button
       onClick={onClick}
       aria-pressed={active}
@@ -49,6 +39,19 @@ export function Quiz() {
       <span className="mt-1 block text-xs text-ivory/50">{hint}</span>
     </button>
   )
+}
+
+const STEPS = ['Which scents draw you in?', 'Where will you wear it?', 'How present should it be?']
+
+export function Quiz() {
+  const [step, setStep] = useState(0)
+  const [a, setA] = useState<QuizAnswers>({ families: [], occasion: null, intensity: null })
+  const { openProduct, notify } = useUI()
+  const add = useShop((s) => s.add)
+
+  const canNext = step === 0 ? a.families.length > 0 : step === 1 ? !!a.occasion : !!a.intensity
+  const results = step === 3 ? recommend(a).slice(0, 3) : []
+
 
   return (
     <section id="discover" className="relative overflow-hidden bg-ink-800 py-24 sm:py-32" aria-labelledby="quiz-title">

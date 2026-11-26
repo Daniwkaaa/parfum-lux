@@ -15,7 +15,22 @@ export function useSmoothScroll(locked: boolean) {
     const tick = (t: number) => lenis.raf(t * 1000)
     gsap.ticker.add(tick)
     gsap.ticker.lagSmoothing(0)
+    let t: ReturnType<typeof setTimeout>
+    let lastH = document.body.scrollHeight
+    const ro = new ResizeObserver(() => {
+      const h = document.body.scrollHeight
+      if (Math.abs(h - lastH) < 2) return
+      lastH = h
+      clearTimeout(t)
+      t = setTimeout(() => {
+        lenis.resize()
+        ScrollTrigger.refresh()
+      }, 150)
+    })
+    ro.observe(document.body)
     return () => {
+      ro.disconnect()
+      clearTimeout(t)
       gsap.ticker.remove(tick)
       lenis.destroy()
       delete (window as unknown as { __lenis?: Lenis }).__lenis

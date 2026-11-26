@@ -108,3 +108,5 @@ body {
 }
 
 @keyframes scrollcue { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
+
+select option { background: #12100e; color: #f3ece0; }

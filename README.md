@@ -26,11 +26,22 @@ npm run build    # production-збірка в dist/
 | Що | Де |
 |---|---|
 | Ціни, об'єми, описи, ноти, параметри 3D-флаконів | `src/data/products.ts` |
-| Контакти, соцмережі, вартість доставки | `src/data/site.ts` |
+| Контакти (телефон/email показуються, коли заповнені), соцмережі, доставка | `src/data/site.ts` |
 | Кольори та шрифти | `tailwind.config.js`, `src/index.css` |
 
 Після зміни параметрів флакона перегенеруйте превʼю:
 `npm run dev`, потім `node scripts/render-thumbs.mjs [id]` (потрібен Playwright) → `public/bottles/*.webp`.
+
+## Тестування
+
+`scripts/qa.mjs` — наскрізний QA-сценарій на Playwright (82 перевірки: навігація, картки, фільтри, сортування, пошук,
+3D-обертання мишею і дотиком, кошик, wishlist, checkout-валідація, квіз, бренди, розсилка, форма консьєржа, політики,
+deep-link, збереження стану; desktop / mobile / tablet; збір помилок консолі).
+
+```bash
+npm run dev
+node scripts/qa.mjs ./qa-shots
+```
 
 ## Важливо
 

@@ -1,4 +1,6 @@
-import { useEffect } from 'react'
+import { useRef } from 'react'
+import { useEscape } from '../lib/useEscape'
+import { useFocusTrap } from '../lib/useFocusTrap'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useUI } from '../store/shop'
 import { site } from '../data/site'
@@ -28,18 +30,16 @@ const CONTENT = {
       'This website is a portfolio demonstration. Your bag, wishlist, newsletter address and demo orders are stored only in your own browser (localStorage) and are never sent to a server.',
       'You can delete this data at any time by clearing your browser storage for this site.',
       'If the boutique is connected to a live backend, personal data (name, phone, delivery address) would be used solely to fulfil your order, in line with the Law of Ukraine “On Personal Data Protection”.',
-      `Questions: ${site.email}`,
+      site.email ? `Questions: ${site.email}` : 'Questions: use the concierge form in the Contacts section.',
     ],
   },
 }
 
 export function PolicyModal() {
   const { policy, setPolicy } = useUI()
-  useEffect(() => {
-    const k = (e: KeyboardEvent) => e.key === 'Escape' && setPolicy(null)
-    window.addEventListener('keydown', k)
-    return () => window.removeEventListener('keydown', k)
-  }, [setPolicy])
+  useEscape(() => setPolicy(null), !!policy)
+  const box = useRef<HTMLDivElement>(null)
+  useFocusTrap(box, !!policy)
   const c = policy ? CONTENT[policy] : null
   return (
     <AnimatePresence>
@@ -47,6 +47,7 @@ export function PolicyModal() {
         <motion.div className="fixed inset-0 z-[70] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <button className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setPolicy(null)} aria-label="Close" tabIndex={-1} />
           <motion.div
+            ref={box}
             role="dialog"
             aria-modal="true"
             aria-labelledby="policy-title"
