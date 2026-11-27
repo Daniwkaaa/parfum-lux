@@ -199,6 +199,16 @@ ok('wheel accord panel', (await p.locator('#wheel h3').innerText()) === 'Ван�
 await p.click('#wheel button:has-text("у колекції")'); await p.waitForTimeout(3200)
 ok('wheel → collection filtered', (await p.locator('#collection button[aria-label^="Прибрати фільтр: Акорд"]').count()) === 1 && Math.abs(await p.evaluate(() => document.getElementById('collection').getBoundingClientRect().top) - 72) < 60)
 await p.click('#collection button:has-text("Скинути все")'); await p.waitForTimeout(800)
+// consultant
+await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(800)
+await p.click('button[aria-label="Відкрити консультанта з вибору аромату"]'); await p.waitForTimeout(900)
+ok('consultant opens', await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"]').count() === 1)
+await p.fill('[role=dialog][aria-label="Консультант ÉLIXIR"] textarea', 'хочу щось з удом і шкірою, стійке, для чоловіка'); await p.keyboard.press('Enter'); await p.waitForTimeout(2000)
+ok('consultant recommends 3', await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("+ Пробник")').count() === 3)
+await p.click('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("Покажіть ще варіанти")'); await p.waitForTimeout(2000)
+ok('consultant follow-up', await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("+ Пробник")').count() >= 4)
+await p.keyboard.press('Escape'); await p.waitForTimeout(800)
+ok('consultant Escape', await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"]').count() === 0)
 // newsletter
 await p.evaluate(() => document.getElementById('newsletter').scrollIntoView()); await p.waitForTimeout(1000)
 await p.fill('#nl-email', 'a@b'); await p.click('#newsletter button[type=submit]')

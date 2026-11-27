@@ -18,6 +18,7 @@ import { SearchOverlay } from './components/SearchOverlay'
 import { Checkout } from './components/Checkout'
 import { PolicyModal } from './components/PolicyModal'
 import { Toast } from './components/Toast'
+import { Consultant } from './components/Consultant'
 import { Ornament } from './components/Logo'
 import { useUI } from './store/shop'
 import { useRevealAnimations, useSmoothScroll } from './lib/useSmoothScroll'
@@ -59,6 +60,7 @@ export default function App() {
         {panel === 'checkout' && <Checkout key="checkout" />}
       </AnimatePresence>
       <PolicyModal />
+      <Consultant />
       <Toast />
     </div>
   )
