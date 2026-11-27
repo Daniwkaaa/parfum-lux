@@ -203,11 +203,14 @@ await p.click('#collection button:has-text("Скинути все")'); await p.w
 await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(800)
 await p.click('button[aria-label="Відкрити консультанта з вибору аромату"]'); await p.waitForTimeout(900)
 ok('consultant opens', await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"]').count() === 1)
-await p.fill('[role=dialog][aria-label="Консультант ÉLIXIR"] textarea', 'хочу щось з удом і шкірою, стійке, для чоловіка'); await p.keyboard.press('Enter'); await p.waitForTimeout(2000)
+await p.fill('[role=dialog][aria-label="Консультант ÉLIXIR"] textarea', 'хочу щось з удом і шкірою, стійке, для чоловіка'); await p.keyboard.press('Enter')
+// software GL keeps the CPU busy here, so wait for the answer instead of a fixed pause
+await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("+ Пробник")').nth(2).waitFor({ timeout: 15000 }).catch(() => {})
 ok('consultant recommends 3', await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("+ Пробник")').count() === 3)
-await p.click('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("Покажіть ще варіанти")'); await p.waitForTimeout(2000)
+await p.click('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("Покажіть ще варіанти")')
+await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("+ Пробник")').nth(3).waitFor({ timeout: 15000 }).catch(() => {})
 ok('consultant follow-up', await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"] button:has-text("+ Пробник")').count() >= 4)
-await p.keyboard.press('Escape'); await p.waitForTimeout(800)
+await p.keyboard.press('Escape'); await p.waitForTimeout(2000)
 ok('consultant Escape', await p.locator('[role=dialog][aria-label="Консультант ÉLIXIR"]').count() === 0)
 // newsletter
 await p.evaluate(() => document.getElementById('newsletter').scrollIntoView()); await p.waitForTimeout(1000)
