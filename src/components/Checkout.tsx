@@ -4,6 +4,7 @@ import { useEscape } from '../lib/useEscape'
 import { Logo } from './Logo'
 import { motion } from 'framer-motion'
 import { getProduct } from '../data/products'
+import { isSample } from '../data/meta'
 import { linePrice, useCartTotals, useShop, useUI, type CartLine } from '../store/shop'
 import { uah } from '../lib/format'
 import { CartLines, Totals } from './CartDrawer'
@@ -205,7 +206,7 @@ export function Checkout() {
                   return (
                     <li key={`${l.id}-${l.ml}`} className="flex justify-between gap-4 text-ivory/70">
                       <span>
-                        {p?.name} · {l.ml} мл × {l.qty}
+                        {p?.name} · {isSample(l.ml) ? 'пробник ' : ''}{l.ml} мл × {l.qty}
                       </span>
                       <span>{uah(linePrice(l))}</span>
                     </li>

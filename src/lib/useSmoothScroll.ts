@@ -23,7 +23,11 @@ export function useSmoothScroll(locked: boolean) {
       lastH = h
       clearTimeout(t)
       t = setTimeout(() => {
-        lenis.resize()
+        // don't refresh mid-glide: it would cancel an in-flight scrollTo
+        if (lenis.isScrolling) {
+          lastH = -1
+          return
+        }
         ScrollTrigger.refresh()
       }, 150)
     })

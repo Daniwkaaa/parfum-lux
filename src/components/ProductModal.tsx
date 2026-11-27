@@ -3,6 +3,10 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useEscape } from '../lib/useEscape'
 import { useFocusTrap } from '../lib/useFocusTrap'
 import { getProduct, products, type Product } from '../data/products'
+import { isSample, sampleSizes } from '../data/meta'
+import { similarTo } from '../lib/accords'
+import { useFilters } from './Collection'
+import { scrollToId } from '../lib/format'
 import { MAX_QTY, useShop, useUI } from '../store/shop'
 import { uah } from '../lib/format'
 import { useWebGL } from '../lib/useWebGL'
@@ -58,7 +62,19 @@ function Details({ p }: { p: Product }) {
   const wished = useShop((s) => s.wishlist.includes(p.id))
   const toggleWish = useShop((s) => s.toggleWish)
   const { notify, setPanel, openProduct } = useUI()
-  const size = p.sizes.find((s) => s.ml === ml)!
+  const [format, setFormat] = useState<'bottle' | 'sample'>('bottle')
+  const samples = sampleSizes(p)
+  const options = format === 'bottle' ? p.sizes : samples
+  const size = [...p.sizes, ...samples].find((s) => s.ml === ml)!
+  const similar = similarTo(p, products)
+  const setFilters = useFilters((s) => s.set)
+  const resetFilters = useFilters((s) => s.reset)
+  const filterByNote = (note: string) => {
+    resetFilters()
+    setFilters({ notes: [note] })
+    openProduct(null)
+    setTimeout(() => scrollToId('collection'), 1300)
+  }
   const idx = products.findIndex((x) => x.id === p.id)
   const next = products[(idx + 1) % products.length]
 
@@ -121,10 +137,50 @@ function Details({ p }: { p: Product }) {
           )}
 
           {/* volume */}
-          <fieldset className="mt-10">
-            <legend className="text-[10px] uppercase tracking-luxe text-ivory/50">Об’єм</legend>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {p.sizes.map((s) => (
+          <div className="mt-10 inline-flex rounded-full border border-ivory/15 p-1" role="radiogroup" aria-label="Формат">
+            {(
+              [
+                ['bottle', 'Флакон'],
+                ['sample', 'Пробник'],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                role="radio"
+                aria-checked={format === id}
+                onClick={() => {
+                  setFormat(id)
+                  setMl(id === 'bottle' ? p.sizes[p.sizes.length > 1 ? 1 : 0].ml : 5)
+                }}
+                className={`relative z-10 rounded-full px-5 py-2 text-[10px] font-semibold uppercase tracking-wide2 transition-colors ${
+                  format === id ? 'text-ink' : 'text-ivory/60 hover:text-ivory'
+                }`}
+              >
+                {format === id && (
+                  <motion.span layoutId={`fmt-${p.id}`} className="absolute inset-0 -z-10 rounded-full bg-champagne" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />
+                )}
+                {label}
+              </button>
+            ))}
+          </div>
+          <AnimatePresence mode="wait">
+            {format === 'sample' && (
+              <motion.p
+                key="sample-note"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-4 max-w-md overflow-hidden text-xs leading-relaxed text-ivory/55"
+              >
+                Відливант з оригінального флакона у скляний атомайзер. Спробуйте аромат на шкірі кілька днів, перш ніж
+                обирати повний флакон.
+              </motion.p>
+            )}
+          </AnimatePresence>
+          <fieldset className="mt-5">
+            <legend className="sr-only">Об’єм</legend>
+            <div className="flex flex-wrap gap-2">
+              {options.map((s) => (
                 <label
                   key={s.ml}
                   className={`cursor-pointer border px-5 py-3 text-center transition-all duration-300 ${
@@ -133,6 +189,7 @@ function Details({ p }: { p: Product }) {
                 >
                   <input type="radio" name="volume" value={s.ml} checked={ml === s.ml} onChange={() => setMl(s.ml)} className="sr-only" />
                   <span className="block text-sm font-semibold">{s.ml} мл</span>
+                  {isSample(s.ml) && <span className="block text-[9px] uppercase tracking-wide2 opacity-60">≈ {Math.round(s.ml * 12)} розпилень</span>}
                   <span className="block text-[10px] opacity-60">{uah(s.price)}</span>
                 </label>
               ))}
@@ -154,7 +211,7 @@ function Details({ p }: { p: Product }) {
               className="btn-gold btn-sweep flex-1 whitespace-nowrap px-4"
               onClick={() => {
                 add(p.id, ml, qty)
-                notify(`${p.name} · ${ml} мл × ${qty} додано до кошика`)
+                notify(`${p.name} · ${isSample(ml) ? 'пробник ' : ''}${ml} мл × ${qty} додано до кошика`)
               }}
             >
               До кошика
@@ -199,7 +256,15 @@ function Details({ p }: { p: Product }) {
                   <p className="font-serif text-lg italic text-champagne">{t}</p>
                   <ul className="mt-3 space-y-1.5 text-sm text-ivory/75">
                     {n.map((x) => (
-                      <li key={x}>{x}</li>
+                      <li key={x}>
+                        <button
+                          onClick={() => filterByNote(x)}
+                          className="text-left underline-offset-4 transition-colors hover:text-champagne hover:underline"
+                          title={`Показати всі аромати з нотою «${x}»`}
+                        >
+                          {x}
+                        </button>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -230,6 +295,46 @@ function Details({ p }: { p: Product }) {
                 <dd className="mt-1 text-ivory/85">{p.characteristics.occasion}</dd>
               </div>
             </dl>
+          </div>
+
+          {/* similar */}
+          <div className="mt-16">
+            <h3 className="text-[10px] uppercase tracking-luxe text-ivory/50">Схожі аромати</h3>
+            <p className="mt-2 text-xs text-ivory/40">Підібрано за спільними нотами й акордами</p>
+            <ul className="no-scrollbar -mx-5 mt-6 flex snap-x gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0">
+              {similar.map(({ product: q, score, shared }, i) => (
+                <motion.li
+                  key={q.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, root: undefined }}
+                  transition={{ delay: i * 0.08, duration: 0.6 }}
+                  className="w-[70vw] shrink-0 snap-start sm:w-auto"
+                >
+                  <button
+                    onClick={() => openProduct(q.id)}
+                    className="group flex h-full w-full gap-4 border border-ivory/10 bg-ink-800 p-3 text-left transition-colors duration-500 hover:border-champagne/50"
+                    aria-label={`Схожий аромат: ${q.brand} ${q.name}`}
+                  >
+                    <span className="h-28 w-20 shrink-0 overflow-hidden bg-[#15110e]">
+                      <BottleImage id={q.id} alt="" className="transition-transform duration-700 group-hover:scale-110" />
+                    </span>
+                    <span className="flex min-w-0 flex-col py-1">
+                      <span className="eyebrow truncate text-[8px]">{q.brand}</span>
+                      <span className="mt-1 font-serif text-lg leading-tight group-hover:text-champagne">{q.name}</span>
+                      <span className="mt-2 flex gap-[3px]" aria-label={`Спорідненість ${Math.round(score * 100)} зі 100`}>
+                        {[0, 1, 2, 3, 4].map((d) => (
+                          <span key={d} className={`h-[3px] w-4 ${d < Math.max(1, Math.round(score * 7)) ? 'bg-champagne' : 'bg-ivory/15'}`} />
+                        ))}
+                      </span>
+                      {shared.length > 0 && (
+                        <span className="mt-2 line-clamp-2 text-[11px] leading-snug text-ivory/45">Спільне: {shared.join(', ').toLowerCase()}</span>
+                      )}
+                    </span>
+                  </button>
+                </motion.li>
+              ))}
+            </ul>
           </div>
 
           <button

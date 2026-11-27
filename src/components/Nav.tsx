@@ -19,7 +19,7 @@ function useActive() {
   const [active, setActive] = useState('home')
   useEffect(() => {
     // sections that are not in the menu highlight their closest menu item
-    const alias: Record<string, string> = { bestsellers: 'collection', discover: 'collection', newsletter: 'about' }
+    const alias: Record<string, string> = { bestsellers: 'collection', wheel: 'collection', discover: 'collection', newsletter: 'about' }
     const ids = [...NAV.map((n) => n.id), ...Object.keys(alias)]
     const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[]
     const io = new IntersectionObserver(

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { getProduct } from '../data/products'
+import { allSizes } from '../data/meta'
 
 export interface CartLine {
   id: string
@@ -74,7 +75,7 @@ export const useShop = create<ShopState>()(
 
 export const linePrice = (l: CartLine) => {
   const p = getProduct(l.id)
-  const s = p?.sizes.find((x) => x.ml === l.ml)
+  const s = p ? allSizes(p).find((x) => x.ml === l.ml) : undefined
   return (s?.price ?? 0) * l.qty
 }
 

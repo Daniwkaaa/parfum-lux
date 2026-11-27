@@ -5,8 +5,10 @@ import { scrollToId } from '../lib/format'
 
 export function Brands() {
   const set = useFilters((s) => s.set)
+  const reset = useFilters((s) => s.reset)
   const pick = (b: string) => {
-    set({ brand: b, family: 'all', query: '' })
+    reset()
+    set({ brand: b })
     scrollToId('collection')
   }
   const row = [...brands, ...brands]

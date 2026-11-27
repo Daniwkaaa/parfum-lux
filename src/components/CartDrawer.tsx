@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { getProduct } from '../data/products'
+import { isSample } from '../data/meta'
 import { MAX_QTY, linePrice, useCartTotals, useShop, useUI } from '../store/shop'
 import { scrollToId, uah } from '../lib/format'
 import { site } from '../data/site'
@@ -46,7 +47,7 @@ export function CartLines({ compact = false }: { compact?: boolean }) {
                       <p className="eyebrow truncate text-[9px]">{p.brand}</p>
                       <p className="truncate font-serif text-lg leading-tight">{p.name}</p>
                       <p className="text-[11px] text-ivory/45">
-                        {p.concentration} · {l.ml} мл
+                        {isSample(l.ml) ? 'Пробник' : p.concentration} · {l.ml} мл
                       </p>
                     </div>
                     {!compact && (

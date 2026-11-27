@@ -3,6 +3,7 @@ import { bottleImage } from '../lib/bottleImages'
 import { motion } from 'framer-motion'
 import type { Product } from '../data/products'
 import { minPrice } from '../data/products'
+import { genderOf, GENDER_LABEL, samplePrice } from '../data/meta'
 import { useShop, useUI } from '../store/shop'
 import { uah } from '../lib/format'
 import { HeartIcon } from './Icons'
@@ -95,10 +96,24 @@ export const ProductCard = forwardRef<HTMLElement, { p: Product; index?: number 
             <span className="block pt-3">{p.short}</span>
           </p>
         </div>
-        <p className="mt-4 font-serif text-xl text-champagne">
-          {p.sizes.length > 1 && <span className="mr-1 font-sans text-[10px] uppercase tracking-wide2 text-ivory/40">від</span>}
-          {uah(minPrice(p))}
-        </p>
+        <div className="mt-4 flex items-end justify-between gap-3">
+          <p className="font-serif text-xl text-champagne">
+            {p.sizes.length > 1 && <span className="mr-1 font-sans text-[10px] uppercase tracking-wide2 text-ivory/40">від</span>}
+            {uah(minPrice(p))}
+          </p>
+          <span className="pb-1 text-[9px] uppercase tracking-wide2 text-ivory/35">{GENDER_LABEL[genderOf(p)]}</span>
+        </div>
+        <button
+          onClick={() => {
+            add(p.id, 2)
+            notify(`${p.name} · пробник 2 мл додано до кошика`)
+          }}
+          className="group/s mt-3 flex items-center gap-2 self-start text-[11px] text-ivory/55 transition-colors hover:text-champagne"
+          aria-label={`Додати пробник 2 мл ${p.name} до кошика`}
+        >
+          <span className="grid h-5 w-5 place-items-center rounded-full border border-ivory/25 text-[12px] leading-none transition-colors group-hover/s:border-champagne">+</span>
+          Пробник 2 мл · {uah(samplePrice(p, 2))}
+        </button>
         <div className="mt-5 grid grid-cols-2 gap-2 pt-1">
           <button onClick={() => open(p.id)} className="btn-line px-2 py-3 text-[10px]">
             Детальніше

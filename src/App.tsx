@@ -6,6 +6,7 @@ import { Hero } from './components/Hero'
 import { Collection } from './components/Collection'
 import { Bestsellers } from './components/Bestsellers'
 import { Quiz } from './components/Quiz'
+import { FragranceWheel } from './components/FragranceWheel'
 import { About } from './components/About'
 import { Brands } from './components/Brands'
 import { Newsletter } from './components/Newsletter'
@@ -41,6 +42,7 @@ export default function App() {
         <Collection />
         <Ornament />
         <Bestsellers />
+        <FragranceWheel />
         <Quiz />
         <Brands />
         <About />
